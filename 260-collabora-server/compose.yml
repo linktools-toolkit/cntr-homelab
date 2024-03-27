@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  collabora_server:
+    image: collabora/code
+    restart: unless-stopped
+    {% if int(COLLABORA_SERVER_EXPOSE_PORT, 0) > 0 %}
+    ports:
+      - "{{ COLLABORA_SERVER_EXPOSE_PORT }}:9980"
+    {% endif %}
+    environment:
+      - password={{ COLLABORA_SERVER_PASSWORD }}
+      - username={{ COLLABORA_SERVER_USERNAME }}
+      - domain={{ COLLABORA_SERVER_DOMAIN }}
+    networks:
+      - nginx
+    logging:
+      options:
+        max-size: 1m
+
+networks:
+  nginx:
+    name: nginx

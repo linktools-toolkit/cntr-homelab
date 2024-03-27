@@ -1,0 +1,56 @@
+{
+    "log": {
+        "loglevel": "{{ 'debug' if DEBUG else 'warning' }}"
+    },
+    "inbounds": [
+        {
+            "port": 9000,
+            "listen": "0.0.0.0",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "{{ XRAY_ID }}"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "{{ XRAY_PATH }}"
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom",
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "tag": "block"
+        }
+    ],
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "ip": [
+                    "geoip:cn",
+                    "geoip:private"
+                ],
+                "outboundTag": "blocked"
+            }
+        ]
+    }
+}

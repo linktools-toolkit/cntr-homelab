@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+@author  : Hu Ji
+@file    : deploy.py 
+@time    : 2023/05/21
+@site    :  
+@software: PyCharm 
+
+              ,----------------,              ,---------,
+         ,-----------------------,          ,"        ,"|
+       ,"                      ,"|        ,"        ,"  |
+      +-----------------------+  |      ,"        ,"    |
+      |  .-----------------.  |  |     +---------+      |
+      |  |                 |  |  |     | -==----'|      |
+      |  | $ sudo rm -rf / |  |  |     |         |      |
+      |  |                 |  |  |/----|`---=    |      |
+      |  |                 |  |  |   ,/|==== ooo |      ;
+      |  |                 |  |  |  // |(((( [33]|    ,"
+      |  `-----------------'  |," .;'| |((((     |  ,"
+      +-----------------------+  ;;  | |         |,"
+         /_)______________(_/  //'   | +---------+
+    ___________________________/___  `,
+   /  oooooooooooooooo  .o.  oooo /,   \,"-----------
+  / ==ooooooooooooooo==.o.  ooo= //   ,`\--{)B     ,"
+ /_==__==========__==_ooo__ooo=_/'   /___________,"
+"""
+from linktools.container import BaseContainer, ExposeLink
+from linktools.decorator import cached_property
+
+
+class Container(BaseContainer):
+
+    @property
+    def dependencies(self) -> [str]:
+        return ["nginx"]
+
+    @cached_property
+    def configs(self):
+        return dict(
+            PROXY_POOL_DOMAIN=self.get_nginx_domain(),
+            PROXY_POOL_EXPOSE_PORT=None,
+        )
+
+    @cached_property
+    def exposes(self) -> [ExposeLink]:
+        port = self.manager.config.get("PROXY_POOL_EXPOSE_PORT", type=int, default=0)
+        return [
+            self.expose_public("Proxy Pool", "tools", "代理池", self.load_nginx_url("PROXY_POOL_DOMAIN")),
+            self.expose_container("Proxy Pool", "tools", "代理池", self.load_port_url(port, https=False)),
+        ]
+
+    def on_starting(self):
+        self.write_nginx_conf(
+            self.manager.config.get("PROXY_POOL_DOMAIN"),
+            self.get_path("nginx.conf"),
+        )

@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  proxy_pool:
+    image: jhao104/proxy_pool
+    container_name: proxy_pool
+    restart: unless-stopped
+    {% if int(PROXY_POOL_EXPOSE_PORT, default=0) > 0 %}
+    ports:
+      - "{{ PROXY_POOL_EXPOSE_PORT }}:5010"
+    {% endif %}
+    links:
+      - proxy_redis
+    environment:
+      DB_CONN: "redis://@proxy_redis:6379/0"
+    networks:
+      - nginx
+      - proxy_pool
+  proxy_redis:
+    image: redis
+    container_name: proxy_redis
+    restart: unless-stopped
+    networks:
+      - proxy_pool
+
+networks:
+  nginx:
+    name: nginx
+  proxy_pool:
+    name: proxy_pool

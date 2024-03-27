@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  onlyoffice_server:
+    image: onlyoffice/documentserver
+    restart: unless-stopped
+    {% if int(ONLYOFFICE_SERVER_EXPOSE_PORT, 0) > 0 %}
+    ports:
+      - "{{ ONLYOFFICE_SERVER_EXPOSE_PORT }}:80"
+    {% endif %}
+    environment:
+      - ONLYOFFICE_HTTPS_HSTS_ENABLED=false
+      - JWT_ENABLED=true
+      - JWT_SECRET={{ ONLYOFFICE_SERVER_JWT_SECRET }}
+    volumes:
+      - "{{ container.get_app_data_path() }}/data:/var/www/onlyoffice/Data"
+      - "{{ container.get_app_data_path() }}/logs:/var/log/onlyoffice"
+    networks:
+      - nginx
+    logging:
+      options:
+        max-size: 1m
+
+networks:
+  nginx:
+    name: nginx

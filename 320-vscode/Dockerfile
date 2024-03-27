@@ -1,0 +1,13 @@
+FROM codercom/code-server:latest
+
+USER root
+RUN apt-get update && \
+    apt-get install -y python3-pip python3-venv && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV PATH=/home/coder/.local/bin:$PATH
+
+USER {{ DOCKER_PUID }}
+ENV USER=coder
+
+WORKDIR /home/coder/project
