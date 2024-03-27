@@ -48,10 +48,9 @@ class Container(BaseContainer):
 
     @cached_property
     def exposes(self) -> [ExposeLink]:
-        port = self.manager.config.get("VSCODE_EXPOSE_PORT", type=int, default=0)
         return [
             self.expose_public("VS Code", "microsoftVisualStudioCode", "在线vscode", self.load_nginx_url("VSCODE_DOMAIN")),
-            self.expose_container("VS Code", "microsoftVisualStudioCode", "在线vscode", self.load_port_url(port, https=False)),
+            self.expose_container("VS Code", "microsoftVisualStudioCode", "在线vscode", self.load_port_url("VSCODE_EXPOSE_PORT", https=False)),
         ]
 
     def on_starting(self):

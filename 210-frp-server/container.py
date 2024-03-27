@@ -51,5 +51,5 @@ class Container(BaseContainer):
         )
         self.manager.change_owner(
             self.get_app_path(),
-            self.manager.environ.user,
+            self.manager.user,
         )

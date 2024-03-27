@@ -61,11 +61,11 @@ class Container(BaseContainer):
             self.expose_public("openmediavault", "nas", "OMV系统", self.load_nginx_url("OMV_DOMAIN")),
             self.expose_public("DSM", "nas", "群晖系统", self.load_nginx_url("DSM_DOMAIN")),
 
-            self.expose_private("Proxmox", "server", "虚拟化环境", self.load_nginx_url("PVE_LOCAL_URL")),
-            self.expose_private("iKuai", "RouterNetwork", "主路由管理", self.load_nginx_url("IKUAI_LOCAL_URL")),
-            self.expose_private("OpenWrt", "RouterNetwork", "旁路由管理", self.load_nginx_url("OPENWRT_LOCAL_URL")),
-            self.expose_private("openmediavault", "nas", "OMV系统", self.load_nginx_url("OMV_LOCAL_URL")),
-            self.expose_private("DSM", "nas", "群晖系统", self.load_nginx_url("DSM_LOCAL_URL")),
+            self.expose_private("Proxmox", "server", "虚拟化环境", self.load_config_url("PVE_LOCAL_URL")),
+            self.expose_private("iKuai", "RouterNetwork", "主路由管理", self.load_config_url("IKUAI_LOCAL_URL")),
+            self.expose_private("OpenWrt", "RouterNetwork", "旁路由管理", self.load_config_url("OPENWRT_LOCAL_URL")),
+            self.expose_private("openmediavault", "nas", "OMV系统", self.load_config_url("OMV_LOCAL_URL")),
+            self.expose_private("DSM", "nas", "群晖系统", self.load_config_url("DSM_LOCAL_URL")),
         ]
 
     def on_starting(self):

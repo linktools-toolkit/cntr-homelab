@@ -55,8 +55,8 @@ class Container(BaseContainer):
 
     @subcommand("scan", help="scan all files")
     def on_exec_scan(self):
-        self.environ.popen(
-            "docker", "exec", "nextcloud", "./occ", "files:scan", "--all"
+        self.manager.create_docker_process(
+            "exec", "nextcloud", "./occ", "files:scan", "--all"
         ).check_call()
 
     def on_starting(self):
@@ -66,7 +66,7 @@ class Container(BaseContainer):
         )
 
     def on_started(self):
-        self.environ.popen(
-            "chown", "-R", self.manager.config.get("DOCKER_USER"),
-            self.get_app_path()
-        ).check_call()
+        self.manager.change_owner(
+            self.get_app_path(),
+            self.manager.config.get("DOCKER_USER"),
+        )

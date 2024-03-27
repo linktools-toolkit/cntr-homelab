@@ -45,10 +45,9 @@ class Container(BaseContainer):
 
     @cached_property
     def exposes(self) -> [ExposeLink]:
-        port = self.manager.config.get("PROXY_POOL_EXPOSE_PORT", type=int, default=0)
         return [
             self.expose_public("Proxy Pool", "tools", "代理池", self.load_nginx_url("PROXY_POOL_DOMAIN")),
-            self.expose_container("Proxy Pool", "tools", "代理池", self.load_port_url(port, https=False)),
+            self.expose_container("Proxy Pool", "tools", "代理池", self.load_port_url("PROXY_POOL_EXPOSE_PORT", https=False)),
         ]
 
     def on_starting(self):
