@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  openwrt_builder:
+    image: p3terx/openwrt-build-env
+    user: "{{ DOCKER_PUID }}:{{ DOCKER_PGID }}"
+    restart: unless-stopped
+    volumes:
+      - "{{ OPENWRT_BUILD_PATH }}:/home/user/openwrt"
+      - "{{ container.get_path() }}/configs:/home/user/configs"
+      - "{{ container.get_path() }}/patchs:/home/user/patchs"
+    working_dir: "/home/user/openwrt"
+    networks:
+      - build
+    logging:
+      options:
+        max-size: 1m
+
+networks:
+  build:
+    name: build
