@@ -41,7 +41,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
-            OPENWRT_BUILD_PATH=Config.Prompt(cached=True),
+            OPENWRT_BUILD_PATH=Config.Prompt(cached=True, type="path"),
         )
 
     @subcommand("update")

@@ -1,28 +1,18 @@
-version: "3.9"
-
 services:
   code-server:
-    container_name: vscode
-    build:
-      context: "{{ container.get_path() }}"
-      dockerfile: "{{ container.get_docker_file_path() }}"
-    user: "{{ DOCKER_PUID }}:{{ DOCKER_PGID }}"
-    restart: unless-stopped
+    user: '{{ DOCKER_PUID }}:{{ DOCKER_PGID }}'
     environment:
-      - TZ=Etc/UTC
-      - PASSWORD={{ VSCODE_PASSWORD }}
-    {% if int(VSCODE_EXPOSE_PORT, 0) > 0 %}
+      - 'TZ=Etc/UTC'
+      - 'PASSWORD={{ VSCODE_PASSWORD }}'
+#   {% if int(VSCODE_EXPOSE_PORT, 0) > 0 %}
     ports:
-      - "{{ VSCODE_EXPOSE_PORT }}:8080"
-    {% endif %}
+      - '{{ VSCODE_EXPOSE_PORT }}:8080'
+#   {% endif %}
     volumes:
-      - "{{ container.get_app_path() }}/home:/home/coder"
-      - "{{ container.get_app_data_path() }}/project:/home/coder/project"
+      - '{{ container.get_app_path("home") }}:/home/coder'
+      - '{{ container.get_app_data_path("project") }}:/home/coder/project'
     networks:
       - nginx
-    logging:
-      options:
-        max-size: 1m
 
 networks:
   nginx:

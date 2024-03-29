@@ -1,20 +1,13 @@
-version: "3.9"
-
 services:
-  xray:
+  xray_server:
     image: teddysun/xray:latest
-    restart: unless-stopped
     environment:
-      - "XRAY_VMESS_AEAD_FORCED=false"
-      - "xray.vmess.aead.forced=false"
+      - 'XRAY_VMESS_AEAD_FORCED=false'
+      - 'xray.vmess.aead.forced=false'
     volumes:
-      - {{ container.get_app_path() }}/etc/xray:/etc/xray
+      - '{{ container.get_app_path("etc", "xray") }}:/etc/xray'
     networks:
       - nginx
-    logging:
-      driver: json-file
-      options:
-        max-size: 1m
 
 networks:
   nginx:

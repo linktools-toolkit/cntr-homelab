@@ -1,14 +1,10 @@
-version: "3.9"
-
 services:
   gitlab:
-    container_name: gitlab
     # image: 'gitlab/gitlab-ce:15.0.2-ce.0'
     image: 'gitlab/gitlab-ce:latest'
     # privileged: true
-    restart: unless-stopped
     environment:
-      GITLAB_ROOT_PASSWORD: "{{ GITLAB_ROOT_PASSWORD }}"
+      GITLAB_ROOT_PASSWORD: '{{ GITLAB_ROOT_PASSWORD }}'
       GITLAB_OMNIBUS_CONFIG: |
           external_url 'https://{{ GITLAB_DOMAIN }}:{{ HTTPS_PORT }}'
           gitlab_rails['gitlab_shell_ssh_port'] = {{ GITLAB_SSH_PORT }}
@@ -49,17 +45,14 @@ services:
           grafana['reporting_enabled'] = false
 
     ports:
-      - "{{ GITLAB_SSH_PORT }}:22"
+      - '{{ GITLAB_SSH_PORT }}:22'
     volumes:
-      - "{{ container.get_app_path() }}/config:/etc/gitlab"
-      - "{{ container.get_app_path() }}/logs:/var/log/gitlab"
-      - "{{ container.get_app_path() }}/data:/var/opt/gitlab"
-      - "{{ container.get_app_data_path() }}/data/git-data:/var/opt/gitlab/git-data"
+      - '{{ container.get_app_path("config") }}:/etc/gitlab'
+      - '{{ container.get_app_path("logs") }}:/var/log/gitlab'
+      - '{{ container.get_app_path("data") }}:/var/opt/gitlab'
+      - '{{ container.get_app_data_path("data", "git-data") }}:/var/opt/gitlab/git-data'
     networks:
       - nginx
-    logging:
-      options:
-        max-size: 256m
 
 
 networks:

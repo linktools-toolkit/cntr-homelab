@@ -1,29 +1,22 @@
-version: "3.9"
-
 services:
   aria2-pro:
     image: p3terx/aria2-pro
-    # user: "{{ DOCKER_PUID }}:{{ DOCKER_PGID }}"
-    restart: unless-stopped
     environment:
-      - PUID={{ DOCKER_PUID }}
-      - PGID={{ DOCKER_PGID }}
-      - UMASK_SET=022
-      - RPC_SECRET={{ ARIA2_RPC_SECRET }}
-      - RPC_PORT=6800
-      - LISTEN_PORT=6888
-    {% if int(ARIA2_EXPOSE_PORT, 0) > 0 %}
+      - 'PUID={{ DOCKER_PUID }}'
+      - 'PGID={{ DOCKER_PGID }}'
+      - 'UMASK_SET=022'
+      - 'RPC_SECRET={{ ARIA2_RPC_SECRET }}'
+      - 'RPC_PORT=6800'
+      - 'LISTEN_PORT=6888'
+#    {% if int(ARIA2_EXPOSE_PORT, 0) > 0 %}
     ports:
-      - "{{ ARIA2_EXPOSE_PORT }}:6800"
-    {% endif %}
+      - '{{ ARIA2_EXPOSE_PORT }}:6800'
+#    {% endif %}
     volumes:
-      - "{{ container.get_app_path() }}/config:/config"
-      - "{{ container.get_download_path() }}:/downloads"
+      - "{{ container.get_app_path("config") }}:/config'
+      - '{{ container.get_download_path() }}:/downloads'
     networks:
       - nginx
-    logging:
-      options:
-        max-size: 1m
 
 networks:
   nginx:

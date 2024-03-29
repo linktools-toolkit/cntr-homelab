@@ -1,12 +1,6 @@
-version: "3.9"
-
 services:
   frps:
     image: snowdreamtech/frps
-    restart: unless-stopped
     volumes:
-      - "{{ container.get_app_path() }}/frps.ini:/etc/frp/frps.ini:ro"
+      - '{{ container.get_app_path("frps.ini") }}:/etc/frp/frps.ini:ro'
     network_mode: host
-    logging:
-      options:
-        max-size: 1m
