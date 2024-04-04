@@ -1,5 +1,5 @@
 services:
-  xray_server:
+  xray-server:
     image: teddysun/xray:latest
     environment:
       - 'XRAY_VMESS_AEAD_FORCED=false'

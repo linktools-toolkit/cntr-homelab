@@ -1,6 +1,6 @@
 services:
   code-server:
-    user: '{{ DOCKER_PUID }}:{{ DOCKER_PGID }}'
+    user: '{{ DOCKER_UID }}:{{ DOCKER_GID }}'
     environment:
       - 'TZ=Etc/UTC'
       - 'PASSWORD={{ VSCODE_PASSWORD }}'

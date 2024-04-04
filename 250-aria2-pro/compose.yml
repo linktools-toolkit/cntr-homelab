@@ -2,8 +2,8 @@ services:
   aria2-pro:
     image: p3terx/aria2-pro
     environment:
-      - 'PUID={{ DOCKER_PUID }}'
-      - 'PGID={{ DOCKER_PGID }}'
+      - 'PUID={{ DOCKER_UID }}'
+      - 'PGID={{ DOCKER_GID }}'
       - 'UMASK_SET=022'
       - 'RPC_SECRET={{ ARIA2_RPC_SECRET }}'
       - 'RPC_PORT=6800'

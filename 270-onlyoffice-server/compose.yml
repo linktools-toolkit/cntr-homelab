@@ -1,5 +1,5 @@
 services:
-  onlyoffice_server:
+  onlyoffice-server:
     image: onlyoffice/documentserver
 #   {% if int(ONLYOFFICE_SERVER_EXPOSE_PORT, 0) > 0 %}
     ports:

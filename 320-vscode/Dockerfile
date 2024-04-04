@@ -7,7 +7,7 @@ RUN apt-get update && \
 
 ENV PATH=/home/coder/.local/bin:$PATH
 
-USER {{ DOCKER_PUID }}
+USER {{ DOCKER_UID }}
 ENV USER=coder
 
 WORKDIR /home/coder/project

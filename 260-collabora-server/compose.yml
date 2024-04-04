@@ -1,5 +1,5 @@
 services:
-  collabora_server:
+  collabora-server:
     image: collabora/code
 #   {% if int(COLLABORA_SERVER_EXPOSE_PORT, 0) > 0 %}
     ports:

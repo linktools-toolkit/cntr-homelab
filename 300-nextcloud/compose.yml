@@ -1,7 +1,7 @@
 services:
 
   nextcloud:
-    user: '{{ DOCKER_PUID }}:{{ DOCKER_PGID }}'
+    user: '{{ DOCKER_UID }}:{{ DOCKER_GID }}'
     environment:
       - 'MYSQL_DATABASE={{ NEXTCLOUD_MYSQL_DATABASE }}'
       - 'MYSQL_USER={{ NEXTCLOUD_MYSQL_USER }}'
@@ -25,12 +25,12 @@ services:
       - nextcloud
       - nginx
     depends_on:
-      - nextcloud_mariadb
-      - nextcloud_redis
+      - nextcloud-mariadb
+      - nextcloud-redis
 
-  nextcloud_mariadb:
+  nextcloud-mariadb:
     image: mariadb
-    user: '{{ DOCKER_PUID }}:{{ DOCKER_PGID }}'
+    user: '{{ DOCKER_UID }}:{{ DOCKER_GID }}'
     command: --transaction-isolation=READ-COMMITTED --log-bin=ROW --innodb-read-only-compressed=OFF
     environment:
       - 'MYSQL_ROOT_PASSWORD={{ NEXTCLOUD_MYSQL_ROOT_PASSWORD }}'
@@ -39,14 +39,16 @@ services:
       - 'MYSQL_PASSWORD={{ NEXTCLOUD_MYSQL_PASSWORD }}'
     # ports:
     #   - 3306:3306
+    hostname: nextcloud_mariadb
     volumes:
       - '{{ container.get_app_path("mariadb") }}:/var/lib/mysql'
     networks:
       - nextcloud
 
-  nextcloud_redis:
+  nextcloud-redis:
     image: redis
     command: redis-server --requirepass nextcloud_redis_pass
+    hostname: nextcloud_redis
     networks:
       - nextcloud
 
