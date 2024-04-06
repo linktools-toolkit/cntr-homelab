@@ -1,4 +1,4 @@
-FROM codercom/code-server:latest
+FROM codercom/code-server:{{ VSCODE_TAG }}
 
 USER root
 RUN apt-get update && \

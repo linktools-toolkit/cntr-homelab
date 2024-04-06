@@ -1,6 +1,6 @@
 services:
   aliyun-ddns:
-    image: sanjusss/aliyun-ddns
+    image: sanjusss/aliyun-ddns:{{ ALI_DDNS_TAG }}
     environment:
       AKID: '{{ ALI_DDNS_KEY }}'
       AKSCT: '{{ ALI_DDNS_SECRET }}'

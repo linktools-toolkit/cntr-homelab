@@ -40,6 +40,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            NEXTCLOUD_TAG="latest",
             NEXTCLOUD_DOMAIN=self.get_nginx_domain(),
             NEXTCLOUD_MYSQL_ROOT_PASSWORD="root_password",
             NEXTCLOUD_MYSQL_DATABASE="nas",

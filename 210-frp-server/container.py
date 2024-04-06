@@ -38,6 +38,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            FRPS_TAG="latest",
             FRPS_BIND_PORT=Config.Prompt(default=7000, cached=True, type=int),
             FRPS_BIND_TOKEN=Config.Prompt(default=utils.make_uuid()[:12], cached=True),
             FRPS_VHOST_HTTP_PORT=Config.Prompt(default=80, cached=True, type=int),

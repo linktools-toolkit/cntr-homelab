@@ -42,6 +42,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            GITLAB_TAG="latest",
             GITLAB_DOMAIN=self.get_nginx_domain(),
             GITLAB_SSH_PORT=Config.Prompt(default=3001, type=int, cached=True),
             GITLAB_ROOT_PASSWORD=Config.Prompt(default="xxx123456xxxx", type=str, cached=True),  # gitlab默认root密码

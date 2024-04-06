@@ -1,6 +1,6 @@
 services:
   aria2-pro:
-    image: p3terx/aria2-pro
+    image: p3terx/aria2-pro:{{ ARIA2_TAG }}
     environment:
       - 'PUID={{ DOCKER_UID }}'
       - 'PGID={{ DOCKER_GID }}'
@@ -13,7 +13,7 @@ services:
       - '{{ ARIA2_EXPOSE_PORT }}:6800'
 #    {% endif %}
     volumes:
-      - "{{ container.get_app_path("config") }}:/config'
+      - '{{ container.get_app_path("config") }}:/config'
       - '{{ container.get_download_path() }}:/downloads'
     networks:
       - nginx

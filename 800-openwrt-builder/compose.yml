@@ -1,6 +1,6 @@
 services:
   openwrt_builder:
-    image: p3terx/openwrt-build-env
+    image: p3terx/openwrt-build-env:latest
     user: '{{ DOCKER_UID }}:{{ DOCKER_GID }}'
     volumes:
       - '{{ path(OPENWRT_BUILD_PATH) }}:/home/user/openwrt'

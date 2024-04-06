@@ -43,6 +43,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            XRAY_TAG="latest",
             XRAY_DOMAIN=self.get_nginx_domain(),
             XRAY_ID=Config.Prompt(default=str(uuid.uuid4()), cached=True),
             XRAY_PATH=Config.Prompt(default="/go/go/go/let/us/go", cached=True),

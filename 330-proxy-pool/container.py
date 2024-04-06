@@ -39,6 +39,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            PROXY_POOL_TAG="latest",
             PROXY_POOL_DOMAIN=self.get_nginx_domain(),
             PROXY_POOL_EXPOSE_PORT=None,
         )

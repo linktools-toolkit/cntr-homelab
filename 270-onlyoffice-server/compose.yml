@@ -1,6 +1,6 @@
 services:
   onlyoffice-server:
-    image: onlyoffice/documentserver
+    image: onlyoffice/documentserver:{{ ONLYOFFICE_SERVER_TAG }}
 #   {% if int(ONLYOFFICE_SERVER_EXPOSE_PORT, 0) > 0 %}
     ports:
       - '{{ ONLYOFFICE_SERVER_EXPOSE_PORT }}:80'

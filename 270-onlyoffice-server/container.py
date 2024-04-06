@@ -44,6 +44,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            ONLYOFFICE_SERVER_TAG="latest",
             ONLYOFFICE_SERVER_DOMAIN=self.get_nginx_domain("onlyoffice"),
             ONLYOFFICE_SERVER_EXPOSE_PORT=None,
             ONLYOFFICE_SERVER_JWT_SECRET=Config.Prompt(default="".join(random.sample(string.ascii_letters + string.digits, 12)), cached=True),

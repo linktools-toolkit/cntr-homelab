@@ -1,6 +1,6 @@
 services:
   collabora-server:
-    image: collabora/code
+    image: collabora/code:{{ COLLABORA_SERVER_TAG }}
 #   {% if int(COLLABORA_SERVER_EXPOSE_PORT, 0) > 0 %}
     ports:
       - '{{ COLLABORA_SERVER_EXPOSE_PORT }}:9980'

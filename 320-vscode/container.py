@@ -41,6 +41,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            VSCODE_TAG="latest",
             VSCODE_DOMAIN=self.get_nginx_domain(),
             VSCODE_EXPOSE_PORT=None,
             VSCODE_PASSWORD=Config.Prompt(cached=True),

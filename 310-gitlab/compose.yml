@@ -1,8 +1,6 @@
 services:
   gitlab:
-    # image: 'gitlab/gitlab-ce:15.0.2-ce.0'
-    image: 'gitlab/gitlab-ce:latest'
-    # privileged: true
+    image: gitlab/gitlab-ce:{{ GITLAB_TAG }}
     environment:
       GITLAB_ROOT_PASSWORD: '{{ GITLAB_ROOT_PASSWORD }}'
       GITLAB_OMNIBUS_CONFIG: |

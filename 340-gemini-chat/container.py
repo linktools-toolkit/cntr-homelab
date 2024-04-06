@@ -41,6 +41,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            GEMINI_TAG="latest",
             GEMINI_DOMAIN=self.get_nginx_domain("gemini"),
             GEMINI_API_KEY=Config.Prompt(cached=True),
         )

@@ -41,6 +41,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            ARIA2_TAG="latest",
             ARIA2_DOMAIN=self.get_nginx_domain(),
             ARIA2_EXPOSE_PORT=None,
             ARIA2_RPC_SECRET=Config.Prompt(default="159753", type=str, cached=True),

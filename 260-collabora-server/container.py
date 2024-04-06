@@ -41,6 +41,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            COLLABORA_SERVER_TAG="latest",
             COLLABORA_SERVER_DOMAIN=self.get_nginx_domain("collabora"),
             COLLABORA_SERVER_EXPOSE_PORT=None,
             COLLABORA_SERVER_USERNAME=Config.Prompt(default="admin", type=str, cached=True),

@@ -37,6 +37,7 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            ALI_DDNS_TAG="latest",
             ALI_DDNS_DOMAIN=Config.Alias("ROOT_DOMAIN", default=Config.Prompt(cached=True)),
             ALI_DDNS_ROOT_DOMAIN=Config.Alias("ROOT_DOMAIN", default=Config.Prompt(cached=True)),
             ALI_DDNS_KEY=Config.Alias("Ali_Key", default=Config.Prompt(cached=True)),
