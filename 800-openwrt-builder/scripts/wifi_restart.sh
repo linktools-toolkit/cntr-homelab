@@ -10,7 +10,11 @@ log() {
     echo "[$(date +%Y-%m-%d" "%H:%M:%S)] $*"
 }
 
-curl http://baidu.com >/dev/null 2>&1 && log "network is ok" && exit 0
+number=0
+while [ "$number" -lt 3 ]; do
+    curl http://baidu.com >/dev/null 2>&1 && log "network is ok" && exit 0
+    number=$((number + 1))
+done
 
 line=$(uci show | awk "/.ssid='$1'/")
 iface=${line%%.ssid=*}
