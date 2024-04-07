@@ -1,0 +1,12 @@
+services:
+  gpt4free:
+    image: hlohaus789/g4f:latest
+    shm_size: '2gb'
+    volumes:
+      - '{{ container.get_app_path("hardir") }}:/app/hardir'
+    networks:
+      - nginx
+
+networks:
+  nginx:
+    name: nginx
