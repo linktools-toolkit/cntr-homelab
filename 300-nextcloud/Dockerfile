@@ -14,8 +14,8 @@ EOF
 RUN cat <<EOF > /custom-cron.sh
 #!/bin/sh
 while true; do
-    php -f /var/www/html/cron.php &
     sleep 5m
+    php -f /var/www/html/cron.php &
 done
 EOF
 
