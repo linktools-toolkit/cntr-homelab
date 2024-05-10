@@ -1,6 +1,6 @@
 services:
   gpt4free:
-    image: hlohaus789/g4f:latest
+    image: hlohaus789/g4f:{{ GPT4FREE_TAG }}
     shm_size: '2gb'
     volumes:
       - '{{ container.get_app_path("hardir") }}:/app/hardir'
