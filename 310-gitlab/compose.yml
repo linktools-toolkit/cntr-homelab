@@ -11,6 +11,14 @@ services:
           nginx['listen_port'] = 80
           nginx['listen_https'] = false
 
+          gitlab_rails['db_adapter'] = "postgresql"
+          gitlab_rails['db_encoding'] = "utf8"
+          gitlab_rails['db_host'] = "{{ GITLAB_DB_HOST }}"
+          gitlab_rails['db_port'] = "{{ GITLAB_DB_PORT }}"
+          gitlab_rails['db_database'] = "{{ GITLAB_DB_DATABASE }}"
+          gitlab_rails['db_username'] = "{{ GITLAB_DB_USERNAME }}"
+          gitlab_rails['db_password'] = "{{ GITLAB_DB_PASSWORD }}"
+
           letsencrypt['enable'] = false
           registry['enable'] = false
 
@@ -32,7 +40,7 @@ services:
           puma['max_threads'] = 2
 
           # 降低后台守护进程并发数
-          sidekiq['max_concurrency'] = 5
+          sidekiq['concurrency'] = 5
 
           gitlab_ci['gitlab_ci_all_broken_builds'] = false
           gitlab_ci['gitlab_ci_add_pusher'] = false
@@ -51,8 +59,27 @@ services:
       - '{{ container.get_app_data_path("data", "git-data") }}:/var/opt/gitlab/git-data'
     networks:
       - nginx
+      - gitlab
+#   {% if GITLAB_DB_HOST == 'gitlab-postgres' %}
+    depends_on:
+      - gitlab-postgres
+#   {% endif %}
 
+#   {% if GITLAB_DB_HOST == 'gitlab-postgres' %}
+  gitlab-postgres:
+    image: postgres:16-alpine
+    volumes:
+      - '{{ container.get_app_path("postgres") }}:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_DB: '{{ GITLAB_DB_DATABASE }}'
+      POSTGRES_USER: '{{ GITLAB_DB_USERNAME }}'
+      POSTGRES_PASSWORD: '{{ GITLAB_DB_PASSWORD }}'
+    networks:
+      - gitlab
+#   {% endif %}
 
 networks:
   nginx:
     name: nginx
+  gitlab:
+    name: gitlab

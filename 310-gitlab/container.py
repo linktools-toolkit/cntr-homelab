@@ -46,6 +46,11 @@ class Container(BaseContainer):
             GITLAB_DOMAIN=self.get_nginx_domain(),
             GITLAB_SSH_PORT=Config.Prompt(default=3001, type=int, cached=True),
             GITLAB_ROOT_PASSWORD=Config.Prompt(default="xxx123456xxxx", type=str, cached=True),  # gitlab默认root密码
+            GITLAB_DB_HOST="gitlab-postgres",
+            GITLAB_DB_PORT="5432",
+            GITLAB_DB_DATABASE="gitlab1",
+            GITLAB_DB_USERNAME="gitlab2",
+            GITLAB_DB_PASSWORD="gitlab3",
         )
 
     @cached_property
