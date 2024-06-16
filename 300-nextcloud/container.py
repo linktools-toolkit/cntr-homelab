@@ -26,6 +26,10 @@
   / ==ooooooooooooooo==.o.  ooo= //   ,``--{)B     ,"
  /_==__==========__==_ooo__ooo=_/'   /___________,"
 """
+import random
+import string
+
+from linktools import Config
 from linktools.cli import subcommand
 from linktools.container import BaseContainer, ExposeLink
 from linktools.decorator import cached_property
@@ -46,6 +50,9 @@ class Container(BaseContainer):
             NEXTCLOUD_MYSQL_DATABASE="nas",
             NEXTCLOUD_MYSQL_USER="nas",
             NEXTCLOUD_MYSQL_PASSWORD="password",
+            NEXTCLOUD_ONLYOFFICE_ENABLED="true",
+            NEXTCLOUD_ONLYOFFICE_SECRET=Config.Alias(default="".join(random.sample(string.ascii_letters + string.digits, 12)), cached=True),
+            NEXTCLOUD_MAINTENANCE_WINDOW_START=2,
         )
 
     @cached_property
@@ -60,14 +67,15 @@ class Container(BaseContainer):
             "exec", "nextcloud", "./occ", "files:scan", "--all"
         ).check_call()
 
+    @subcommand("fix", help="fix permissions")
+    def on_exec_fix(self):
+        self.manager.change_owner(
+            self.get_app_path(),
+            self.manager.config.get("DOCKER_USER"),
+        )
+
     def on_starting(self):
         self.write_nginx_conf(
             self.manager.config.get("NEXTCLOUD_DOMAIN"),
             self.get_path("nginx.conf"),
-        )
-
-    def on_started(self):
-        self.manager.change_owner(
-            self.get_app_path(),
-            self.manager.config.get("DOCKER_USER"),
         )

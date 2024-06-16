@@ -3,17 +3,21 @@ services:
   nextcloud:
     user: '{{ DOCKER_UID }}:{{ DOCKER_GID }}'
     environment:
-      - 'MYSQL_DATABASE={{ NEXTCLOUD_MYSQL_DATABASE }}'
-      - 'MYSQL_USER={{ NEXTCLOUD_MYSQL_USER }}'
-      - 'MYSQL_PASSWORD={{ NEXTCLOUD_MYSQL_PASSWORD }}'
-      - 'MYSQL_HOST=nextcloud_mariadb:3306'
       - 'NEXTCLOUD_TRUSTED_DOMAINS={{ NEXTCLOUD_DOMAIN }}'
       - 'OVERWRITEPROTOCOL=https'
       - 'OVERWRITEHOST={{ NEXTCLOUD_DOMAIN }}:{{ HTTPS_PORT }}'
       - 'OVERWRITECLIURL=https://{{ NEXTCLOUD_DOMAIN }}:{{ HTTPS_PORT }}'
+      - 'MAINTENANCE_WINDOW_START={{ int(NEXTCLOUD_MAINTENANCE_WINDOW_START) }}'
+      - 'MYSQL_DATABASE={{ NEXTCLOUD_MYSQL_DATABASE }}'
+      - 'MYSQL_USER={{ NEXTCLOUD_MYSQL_USER }}'
+      - 'MYSQL_PASSWORD={{ NEXTCLOUD_MYSQL_PASSWORD }}'
+      - 'MYSQL_HOST=nextcloud_mariadb:3306'
       - 'REDIS_HOST=nextcloud_redis'
       - 'REDIS_PORT=6379'
       - 'REDIS_HOST_PASSWORD=nextcloud_redis_pass'
+      - 'ONLYOFFICE_ENABLED={{ "yes" if bool(NEXTCLOUD_ONLYOFFICE_ENABLED) else "no" }}'
+      - 'ONLYOFFICE_SECRET={{ NEXTCLOUD_ONLYOFFICE_SECRET }}'
+      - 'ONLYOFFICE_HOST=nextcloud-onlyoffice'
     sysctls:
       - net.ipv4.ip_unprivileged_port_start=0 # Allow an unprivileged user to listen on any port (https://github.com/nextcloud/docker/issues/359)
     volumes:
@@ -27,6 +31,9 @@ services:
     depends_on:
       - nextcloud-mariadb
       - nextcloud-redis
+#   {% if bool(NEXTCLOUD_ONLYOFFICE_ENABLED) %}
+      - nextcloud-onlyoffice
+#   {% endif %}
 
   nextcloud-mariadb:
     image: mariadb
@@ -51,6 +58,21 @@ services:
     hostname: nextcloud_redis
     networks:
       - nextcloud
+
+#   {% if bool(NEXTCLOUD_ONLYOFFICE_ENABLED) %}
+  nextcloud-onlyoffice:
+    image: onlyoffice/documentserver
+    environment:
+      - 'ONLYOFFICE_HTTPS_HSTS_ENABLED=false'
+      - 'JWT_ENABLED=true'
+      - 'JWT_HEADER=AuthorizationJwt'
+      - 'JWT_SECRET={{ NEXTCLOUD_ONLYOFFICE_SECRET }}'
+    volumes:
+      - '{{ container.get_app_data_path("onlyoffice") }}:/var/www/onlyoffice/Data'
+    networks:
+      - nextcloud
+      - nginx
+#   {% endif %}
 
 networks:
   nginx:
