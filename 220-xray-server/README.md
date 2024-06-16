@@ -1,16 +1,36 @@
 # xray scripts
 
-先按照[文档](../../README.md)安装依赖项，然后按照以下命令部署docker容器
+## 准备工作
+
+1. 一台vps
+2. 域名（需要配置域名解析到vps的公网ip）
+
+## 开始部署
+
+先按照[文档](../README.md)安装Docker、Python3等环境，然后按照以下命令部署Docker容器
 
 ```
-# 配置acme的dns类型
-# 比如用的阿里云的dns就填dns_ali，顺带配上Ali_Key和Ali_Secret参数
-# dns类型和所需参数参照：https://github.com/acmesh-official/acme.sh/wiki/dnsapi
-ACME_DNS_API=dns_ali
-Ali_Key=xxx
-Ali_Secret=yyy
+# 添加容器，核心是xray-server，其他可选
+ct-cntr add xray-server portainer 
 
-# 开始部署环境变量
-python3 manager.py add xray aliyun-ddns portainer # 其中aliyun-ddns portainer可选
-python3 manager.py up
+# 配置主域名和acme，用于自动生成ssl证书
+# ACME_DNS_API参数为dnsapi类型，比如用的阿里云的dns就填dns_ali，顺带配上Ali_Key和Ali_Secret参数
+# 具体可参考：https://github.com/acmesh-official/acme.sh/wiki/dnsapi
+ct-cntr config set \
+    ROOT_DOMAIN=test.com \
+    ACME_DNS_API=dns_ali \
+    Ali_Key=xxx \
+    Ali_Secret=yyy
+
+# 配置xray参数，也可以自动生成，通过ct-cntr config list命令查看
+ct-cntr config set \
+    XRAY_ID=aaaaaaaa-xxxx-yyyy-zzzz-bbbbbbbbbbbb \
+    XRAY_PATH=/websocket/xxx/yyy/zzz
+
+# 启动容器
+ct-cntr up
 ```
+
+最后，xray客户端可以通过以下配置连接到xray服务端
+
+![xray-client](../images/xray-client.png)

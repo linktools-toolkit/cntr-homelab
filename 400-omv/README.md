@@ -2,8 +2,9 @@
 
 ## 准备工作
 
-1. 公网ip
-2. 域名（需要配置cname记录"*"解析到本域名）
+1. 一台all in one的nas主机，可以是pve、esxi、kvm等
+2. 公网ip（电信可联系运营商开放公网ip）
+3. 域名（需要配置cname记录"*"解析到本域名）
 
 ## 宿主机
 
@@ -35,41 +36,31 @@
 1. 配置ip（10.10.10.1/24），网关（10.10.10.252），dns（10.10.10.252）
 2. 配置用户
 3. 配置文件系统
-4. 配置各类文件系统服务
-5. 安装docker
-6. 使用本项目一键搭建nextcloud、acme等环境
-7. 配置nextcloud定时任务（docker exec nextcloud php cron.php）
+4. 配置各类文件系统服务（smb、nfs、 ...）
+5. 使用本项目一键搭建nextcloud等环境
 
 #### 部署
 
 ##### 部署docker容器
 
-先按照[文档](../../README.md)安装依赖项，然后按照以下命令部署docker容器
+先按照[文档](../README.md)安装Docker、Python3等环境，然后按照以下命令部署Docker容器
 
 ```
-# 以下export的环境变量，也可写在configs/config.py（需要自己创建，可参考configs/sample/config.py）文件中
+# 添加容器
+# omv中包含了（nextcloud、flare），其他的像（vscode、gitlab）按需添加
+ct-cntr add omv gitlab portainer vscode
 
-# 配置acme的dns类型
-# 比如用的阿里云的dns就填dns_ali，顺带配上Ali_Key和Ali_Secret参数
-# dns类型和所需参数参照：https://github.com/acmesh-official/acme.sh/wiki/dnsapi
-export ACME_DNS_API=dns_ali
-export Ali_Key=xxx
-export Ali_Secret=yyy
+# 配置主域名和acme，用于自动生成ssl证书
+# ACME_DNS_API参数为dnsapi类型，比如用的阿里云的dns就填dns_ali，顺带配上Ali_Key和Ali_Secret参数
+# 具体可参考：https://github.com/acmesh-official/acme.sh/wiki/dnsapi
+ct-cntr config set \
+    ROOT_DOMAIN=test.com \
+    ACME_DNS_API=dns_ali \
+    Ali_Key=xxx \
+    Ali_Secret=yyy
 
-# 各个系统域名配置
-export ROOT_DOMAIN="xxx"
-# export WILDCARD_DOMAIN="true" # 必须打开泛域名解析，安装omv时默认打开
-# export NEXTCLOUD_DOMAIN="nextcloud.$ROOT_DOMAIN"
-# export ARIA2_DOMAIN="aria2.$ROOT_DOMAIN"
-# export GITLAB_DOMAIN="gitlab.$ROOT_DOMAIN"
-# export PVE_DOMAIN="pve.$ROOT_DOMAIN"
-# export IKUAI_DOMAIN="ikuai.$ROOT_DOMAIN"
-# export OPENWRT_DOMAIN="openwrt.$ROOT_DOMAIN"
-# export VSCODE_DOMAIN="vscode.$ROOT_DOMAIN"
-# export PORTAINER_DOMAIN="portainer.$ROOT_DOMAIN"
-
-python3 manager.py add omv gitlab portainer vscode # omv中包含了（nextcloud、flare），其他的像（vscode、gitlab）按需添加
-python3 manager.py up
+# 启动容器
+ct-cntr up
 ```
 
 ##### 配置docker延迟加载

@@ -46,7 +46,7 @@ class Container(BaseContainer):
             XRAY_TAG="latest",
             XRAY_DOMAIN=self.get_nginx_domain(),
             XRAY_ID=Config.Prompt(default=str(uuid.uuid4()), cached=True),
-            XRAY_PATH=Config.Prompt(default="/go/go/go/let/us/go", cached=True),
+            XRAY_PATH=Config.Prompt(default="/websocket/xxx/yyy/zzz", cached=True),
         )
 
     def on_starting(self):
