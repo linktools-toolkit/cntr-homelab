@@ -1,0 +1,10 @@
+{
+    "server": "{{ SHADOWSOCKS_SERVER_HOST }}",
+    "server_port": {{ int(SHADOWSOCKS_SERVER_PORT) }},
+    "local_address": "0.0.0.0",
+    "local_port": 1080,
+    "password": "{{ SHADOWSOCKS_SERVER_PASSWORD }}",
+    "timeout": 300,
+    "method": "{{ SHADOWSOCKS_SERVER_METHOD }}",
+    "fast_open": false
+}
