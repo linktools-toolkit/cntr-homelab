@@ -6,8 +6,10 @@ FROM nextcloud:{{ NEXTCLOUD_TAG }}
 #     ln -sf /usr/bin/youtube-dl /usr/local/bin/youtube-dl \
 #     rm -rf /var/lib/apt/lists/*
 
-COPY files/scripts /scripts
-COPY files/docker-entrypoint-hooks.d/before-starting/* /docker-entrypoint-hooks.d/before-starting
+COPY overlay/scripts /scripts
+COPY overlay/docker-entrypoint-hooks.d/before-starting/* /docker-entrypoint-hooks.d/before-starting
+COPY overlay/docker-entrypoint-hooks.d/post-installation/* /docker-entrypoint-hooks.d/post-installation
+COPY overlay/docker-entrypoint-hooks.d/post-upgrade/* /docker-entrypoint-hooks.d/post-upgrade
 
 RUN mkdir -p /usr/local/etc/php/conf.d/ && \
     chmod 777 /usr/local/etc/php/conf.d/

@@ -26,6 +26,7 @@
   / ==ooooooooooooooo==.o.  ooo= //   ,``--{)B     ,"
  /_==__==========__==_ooo__ooo=_/'   /___________,"
 """
+import os
 
 from linktools import Config
 from linktools.container import BaseContainer, ExposeLink
@@ -61,11 +62,16 @@ class Container(BaseContainer):
         )
 
     def on_started(self):
-        self.manager.change_owner(
-            self.get_app_path(),
-            self.manager.config.get("DOCKER_USER")
-        )
-        self.manager.change_owner(
-            self.get_app_data_path(),
-            self.manager.config.get("DOCKER_USER")
-        )
+        uid = self.manager.config.get("DOCKER_UID")
+        if os.stat(self.get_app_path()).st_uid != uid:
+            self.manager.change_owner(
+                self.get_app_path(),
+                self.manager.config.get("DOCKER_USER")
+            )
+
+        uid = self.manager.config.get("DOCKER_UID")
+        if os.stat(self.get_app_data_path()).st_uid != uid:
+            self.manager.change_owner(
+                self.get_app_data_path(),
+                self.manager.config.get("DOCKER_USER")
+            )
