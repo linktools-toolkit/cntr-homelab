@@ -14,7 +14,7 @@ sudo apt-get install -y python3 python3-pip git docker-compose-plugin
 安装linktools库并添加homelab仓库
 
 ```bash
-# Install linktools library and add redroid repository
+# Install linktools library and add repository
 python3 -m pip install -U "linktools[container]"
 ct-cntr repo add https://github.com/ice-black-tea/cntr-homelab  # fetch code from remote repository
 ct-cntr repo update                                             # update code from remote repository
@@ -34,6 +34,20 @@ ct-cntr repo update                                             # update code fr
 
 👉 [搭建文档](https://github.com/redroid-rockchip)
 
+## 内置配置
+
+第一次部署时，会要求填写对应容器的配置项，其中部分内置的配置项包括：
+
+| 参数                    | 类型  | 默认值                                   | 描述                                                                                                                       |
+|-----------------------|-----|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| CONTAINER_TYPE        | str | -                                     | 可选项<br/>1. docker: 使用root权限docker daemon<br/>2. docker-rootless: 使用rootless模式docker daemon<br/> 3. podman: 使用podman<br/> |
+| DOCKER_USER           | str | 当前shell用户                             | 部分容器rootless模式的容器以此用户权限运行                                                                                                |
+| DOCKER_HOST           | str | /var/run/docker.sock                  | docker daemon进程的 url                                                                                                     |
+| DOCKER_APP_PATH       | str | ~/.linktools/data/container/app       | 容器数据持久化目录，强烈建议指定到固态硬盘中                                                                                                   |
+| DOCKER_APP_DATA_PATH  | str | ~/.linktools/data/container/app_data  | 不会频繁读写的容器数据持久化目录，可以放在机械硬盘中                                                                                               |
+| DOCKER_USER_DATA_PATH | str | ~/.linktools/data/container/user_data | 重要用户数据目录，强烈推荐指定到nas专用硬盘中                                                                                                 |
+| DOCKER_DOWNLOAD_PATH  | str | ~/.linktools/data/container/download  | 下载数据目录                                                                                                                   |
+| HOST                  | str | 当前局域网ip地址                             |                                                                                                                          |
 
 ## 常用命令
 
@@ -95,4 +109,7 @@ ct-cntr config unset ROOT_DOMAIN ACME_DNS_API Ali_Key Ali_Secret
 
 # 使用vim编辑配置文件
 ct-cntr config edit --editor vim
+
+# 重新加载配置
+ct-cntr config reload 
 ```
