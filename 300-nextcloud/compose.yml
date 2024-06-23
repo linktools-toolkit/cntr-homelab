@@ -18,6 +18,12 @@ services:
       - 'ONLYOFFICE_ENABLED={{ "yes" if bool(NEXTCLOUD_ONLYOFFICE_ENABLED) else "no" }}'
       - 'ONLYOFFICE_SECRET={{ NEXTCLOUD_ONLYOFFICE_SECRET }}'
       - 'ONLYOFFICE_HOST=nextcloud-onlyoffice'
+  #   {% if NEXTCLOUD_PHP_MEMORY_LIMIT %}
+      - 'PHP_MEMORY_LIMIT={{ NEXTCLOUD_PHP_MEMORY_LIMIT }}'
+  #   {% endif %}
+  #   {% if NEXTCLOUD_PHP_UPLOAD_LIMIT %}
+      - 'PHP_UPLOAD_LIMIT={{ NEXTCLOUD_PHP_UPLOAD_LIMIT }}'
+  #   {% endif %}
     sysctls:
       - net.ipv4.ip_unprivileged_port_start=0 # Allow an unprivileged user to listen on any port (https://github.com/nextcloud/docker/issues/359)
     volumes:

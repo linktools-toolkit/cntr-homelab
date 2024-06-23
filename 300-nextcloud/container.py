@@ -54,6 +54,8 @@ class Container(BaseContainer):
             NEXTCLOUD_ONLYOFFICE_ENABLED=False,
             NEXTCLOUD_ONLYOFFICE_SECRET=Config.Alias(default="".join(random.sample(string.ascii_letters + string.digits, 12)), cached=True),
             NEXTCLOUD_MAINTENANCE_WINDOW_START=2,
+            NEXTCLOUD_PHP_MEMORY_LIMIT=None,
+            NEXTCLOUD_PHP_UPLOAD_LIMIT=None,
         )
 
     @cached_property
