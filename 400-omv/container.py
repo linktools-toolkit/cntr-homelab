@@ -34,7 +34,7 @@ class Container(BaseContainer):
 
     @property
     def dependencies(self) -> [str]:
-        return ["flare", "nextcloud"]
+        return ["flare", "nextcloud", "qbittorrent"]
 
     @cached_property
     def configs(self):

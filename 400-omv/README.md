@@ -47,7 +47,7 @@
 
 ```
 # 添加容器
-# omv中包含了（nextcloud、flare），其他的像（vscode、gitlab）按需添加
+# omv中包含了（nextcloud、flare、qbittorrent），其他的像vscode、gitlab按需添加
 ct-cntr add omv gitlab portainer vscode
 
 # 配置主域名和acme，用于自动生成ssl证书
