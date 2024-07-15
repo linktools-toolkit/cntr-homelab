@@ -3,7 +3,7 @@ services:
     image: hlohaus789/g4f:{{ GPT4FREE_TAG }}
     shm_size: '2gb'
     volumes:
-      - '{{ container.get_app_path("hardir") }}:/app/hardir'
+      - '{{ mkdir(APP_PATH/"hardir") | chown }}:/app/hardir'
     networks:
       - nginx
 

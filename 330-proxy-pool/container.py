@@ -26,6 +26,7 @@
   / ==ooooooooooooooo==.o.  ooo= //   ,``--{)B     ,"
  /_==__==========__==_ooo__ooo=_/'   /___________,"
 """
+from linktools import Config
 from linktools.container import BaseContainer, ExposeLink
 from linktools.decorator import cached_property
 
@@ -41,7 +42,7 @@ class Container(BaseContainer):
         return dict(
             PROXY_POOL_TAG="latest",
             PROXY_POOL_DOMAIN=self.get_nginx_domain(),
-            PROXY_POOL_EXPOSE_PORT=None,
+            PROXY_POOL_EXPOSE_PORT=Config.Alias(type=int, default=0),
         )
 
     @cached_property

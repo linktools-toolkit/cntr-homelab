@@ -44,7 +44,7 @@ class Container(BaseContainer):
         return dict(
             VSCODE_TAG="latest",
             VSCODE_DOMAIN=self.get_nginx_domain(),
-            VSCODE_EXPOSE_PORT=None,
+            VSCODE_EXPOSE_PORT=Config.Alias(type=int, default=0),
             VSCODE_PASSWORD=Config.Prompt(cached=True),
         )
 
@@ -60,18 +60,3 @@ class Container(BaseContainer):
             self.manager.config.get("VSCODE_DOMAIN"),
             self.get_path("nginx.conf"),
         )
-
-    def on_started(self):
-        uid = self.manager.config.get("DOCKER_UID")
-        if os.stat(self.get_app_path()).st_uid != uid:
-            self.manager.change_owner(
-                self.get_app_path(),
-                self.manager.config.get("DOCKER_USER")
-            )
-
-        uid = self.manager.config.get("DOCKER_UID")
-        if os.stat(self.get_app_data_path()).st_uid != uid:
-            self.manager.change_owner(
-                self.get_app_data_path(),
-                self.manager.config.get("DOCKER_USER")
-            )

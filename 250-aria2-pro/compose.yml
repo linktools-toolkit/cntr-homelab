@@ -8,13 +8,13 @@ services:
       - 'RPC_SECRET={{ ARIA2_RPC_SECRET }}'
       - 'RPC_PORT=6800'
       - 'LISTEN_PORT=6888'
-#    {% if int(ARIA2_EXPOSE_PORT, 0) > 0 %}
+#    {% if ARIA2_EXPOSE_PORT > 0 %}
     ports:
       - '{{ ARIA2_EXPOSE_PORT }}:6800'
 #    {% endif %}
     volumes:
-      - '{{ container.get_app_path("config") }}:/config'
-      - '{{ container.get_download_path() }}:/downloads'
+      - '{{ mkdir(APP_PATH/"config") | chown(docker_user) }}:/config'
+      - '{{ mkdir(DOWNLOAD_PATH) | chown(docker_user) }}:/downloads'
     networks:
       - nginx
 

@@ -51,9 +51,9 @@ class Container(BaseContainer):
             NEXTCLOUD_MYSQL_DATABASE="nas",
             NEXTCLOUD_MYSQL_USER="nas",
             NEXTCLOUD_MYSQL_PASSWORD="password",
-            NEXTCLOUD_ONLYOFFICE_ENABLED=False,
+            NEXTCLOUD_ONLYOFFICE_ENABLED=Config.Alias(type=bool, default=False),
             NEXTCLOUD_ONLYOFFICE_SECRET=Config.Alias(default="".join(random.sample(string.ascii_letters + string.digits, 12)), cached=True),
-            NEXTCLOUD_MAINTENANCE_WINDOW_START=2,
+            NEXTCLOUD_MAINTENANCE_WINDOW_START=Config.Alias(type=int, default=2),
             NEXTCLOUD_PHP_MEMORY_LIMIT=None,
             NEXTCLOUD_PHP_UPLOAD_LIMIT=None,
         )
@@ -75,11 +75,3 @@ class Container(BaseContainer):
             self.manager.config.get("NEXTCLOUD_DOMAIN"),
             self.get_path("nginx.conf"),
         )
-
-    def on_started(self):
-        uid = self.manager.config.get("DOCKER_UID")
-        if os.stat(self.get_app_path()).st_uid != uid:
-            self.manager.change_owner(
-                self.get_app_path(),
-                self.manager.config.get("DOCKER_USER"),
-            )

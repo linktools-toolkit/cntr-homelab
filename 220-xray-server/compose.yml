@@ -5,7 +5,7 @@ services:
       - 'XRAY_VMESS_AEAD_FORCED=false'
       - 'xray.vmess.aead.forced=false'
     volumes:
-      - '{{ container.get_app_path("etc", "xray") }}:/etc/xray'
+      - '{{ mkdir(APP_PATH/"etc"/"xray") | chown }}:/etc/xray'
     networks:
       - nginx
 

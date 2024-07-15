@@ -53,10 +53,10 @@ services:
     ports:
       - '{{ GITLAB_SSH_PORT }}:22'
     volumes:
-      - '{{ container.get_app_path("config") }}:/etc/gitlab'
-      - '{{ container.get_app_path("logs") }}:/var/log/gitlab'
-      - '{{ container.get_app_path("data") }}:/var/opt/gitlab'
-      - '{{ container.get_app_data_path("data", "git-data") }}:/var/opt/gitlab/git-data'
+      - '{{ mkdir(APP_PATH/"config") | chown }}:/etc/gitlab'
+      - '{{ mkdir(APP_PATH/"logs") | chown }}:/var/log/gitlab'
+      - '{{ mkdir(APP_PATH/"data") | chown }}:/var/opt/gitlab'
+      - '{{ mkdir(APP_DATA_PATH/"data"/"git-data") | chown }}:/var/opt/gitlab/git-data'
     networks:
       - nginx
       - gitlab
@@ -69,7 +69,7 @@ services:
   gitlab-postgres:
     image: postgres:16-alpine
     volumes:
-      - '{{ container.get_app_path("postgres") }}:/var/lib/postgresql/data'
+      - '{{ mkdir(APP_PATH/"postgres") | chown }}:/var/lib/postgresql/data'
     environment:
       POSTGRES_DB: '{{ GITLAB_DB_DATABASE }}'
       POSTGRES_USER: '{{ GITLAB_DB_USERNAME }}'

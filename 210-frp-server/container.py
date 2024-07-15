@@ -3,10 +3,10 @@
 
 """
 @author  : Hu Ji
-@file    : deploy.py 
+@file    : deploy.py
 @time    : 2023/05/21
-@site    :  
-@software: PyCharm 
+@site    :
+@software: PyCharm
 
               ,----------------,              ,---------,
          ,-----------------------,          ,"        ,"|
@@ -49,8 +49,4 @@ class Container(BaseContainer):
         self.render_template(
             os.path.join(self.root_path, "frps.ini"),
             self.get_app_path("frps.ini", create_parent=True),
-        )
-        self.manager.change_owner(
-            self.get_app_path(),
-            self.manager.user,
         )

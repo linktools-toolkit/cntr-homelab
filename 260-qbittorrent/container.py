@@ -44,8 +44,8 @@ class Container(BaseContainer):
         return dict(
             QBITTORRENT_TAG="latest",
             QBITTORRENT_DOMAIN=self.get_nginx_domain(),
-            QBITTORRENT_EXPOSE_PORT=None,
-            QBITTORRENT_TORRENTING_PORT=6881,
+            QBITTORRENT_EXPOSE_PORT=Config.Alias(type=int, default=0),
+            QBITTORRENT_TORRENTING_PORT=Config.Alias(type=int, default=6881),
         )
 
     @cached_property
@@ -60,16 +60,3 @@ class Container(BaseContainer):
             self.manager.config.get("QBITTORRENT_DOMAIN"),
             self.get_path("nginx.conf"),
         )
-
-    def on_started(self):
-        uid = self.manager.config.get("DOCKER_UID")
-        if os.stat(self.get_app_path()).st_uid != uid:
-            self.manager.change_owner(
-                self.get_app_path(),
-                self.manager.config.get("DOCKER_USER"),
-            )
-        if os.stat(self.get_download_path("qbittorrent")).st_uid != uid:
-            self.manager.change_owner(
-                self.get_download_path("qbittorrent"),
-                self.manager.config.get("DOCKER_USER"),
-            )

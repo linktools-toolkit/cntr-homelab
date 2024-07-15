@@ -1,15 +1,15 @@
 services:
 
-  pypiserver:
+  pypi-server:
     image: pypiserver/pypiserver:{{ PYPISERVER_TAG }}
-    #   {% if int(PYPISERVER_EXPOSE_PORT, default=0) > 0 %}
+#   {% if PYPISERVER_EXPOSE_PORT > 0 %}
     ports:
       - '{{ PYPISERVER_EXPOSE_PORT }}:8080'
 #   {% endif %}
     volumes:
-      - '{{ container.get_app_data_path("auth") }}:/data/auth'
-      - '{{ container.get_app_data_path("packages") }}:/data/packages'
-    command: run -P /data/auth/.htpasswd -a update /data/packages
+      - '{{ mkdir(APP_DATA_PATH/"auth") | chown }}:/data/auth'
+      - '{{ mkdir(APP_DATA_PATH/"packages") | chown }}:/data/packages'
+    command: run -P /data/auth/.htpasswd -a {{ PYPISERVER_AUTHENTICATE }} /data/packages
     networks:
       - nginx
 

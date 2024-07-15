@@ -3,9 +3,9 @@ services:
     image: p3terx/openwrt-build-env:latest
     user: '{{ DOCKER_UID }}:{{ DOCKER_GID }}'
     volumes:
-      - '{{ path(OPENWRT_BUILD_PATH) }}:/home/user/openwrt'
-      - '{{ container.get_path("configs") }}:/home/user/configs'
-      - '{{ container.get_path("patchs") }}:/home/user/patchs'
+      - '{{ OPENWRT_BUILD_PATH | mkdir | chown(docker_user) }}:/home/user/openwrt'
+      - '{{ chown(CONTAINER_PATH/"configs", docker_user) }}:/home/user/configs'
+      - '{{ chown(CONTAINER_PATH/"patchs", docker_user) }}:/home/user/patchs'
     working_dir: "/home/user/openwrt"
     networks:
       - build

@@ -43,16 +43,17 @@ class Container(BaseContainer):
     def configs(self):
         return dict(
             PYPISERVER_TAG="latest",
-            PYPISERVER_DOMAIN=self.get_nginx_domain(),
-            PYPISERVER_EXPOSE_PORT=None,
+            PYPISERVER_DOMAIN=self.get_nginx_domain("pypi"),
+            PYPISERVER_EXPOSE_PORT=Config.Alias(type=int, default=0),
             PYPISERVER_USERNAME=Config.Prompt(cached=True),
             PYPISERVER_PASSWORD=Config.Prompt(cached=True),
+            PYPISERVER_AUTHENTICATE="update",  # "update,download,list"
         )
 
     @cached_property
     def exposes(self) -> [ExposeLink]:
         return [
-            self.expose_public("pypiserver", "languagePython", "pypiserver", self.load_nginx_url("PYPISERVER_DOMAIN")),
+            self.expose_public("pypiserver", "languagePython", "pypiserver", self.load_nginx_url("PYPISERVER_DOMAIN", "simple")),
             self.expose_container("pypiserver", "languagePython", "pypiserver", self.load_port_url("PYPISERVER_EXPOSE_PORT", https=False)),
         ]
 

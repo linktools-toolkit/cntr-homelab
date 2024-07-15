@@ -6,15 +6,15 @@ services:
       - 'PGID={{ DOCKER_GID }}'
       - 'TZ=Etc/UTC'
       - 'WEBUI_PORT=8080'
-      - 'TORRENTING_PORT={{ int(QBITTORRENT_TORRENTING_PORT) }}'
+      - 'TORRENTING_PORT={{ QBITTORRENT_TORRENTING_PORT }}'
     volumes:
-      - '{{ container.get_app_path("config") }}:/config'
-      - '{{ container.get_download_path("qbittorrent") }}:/downloads'
-#   {% if int(QBITTORRENT_EXPOSE_PORT, 0) > 0 %}
+      - '{{ mkdir(APP_PATH/"config") | chown(docker_user) }}:/config'
+      - '{{ mkdir(DOWNLOAD_PATH/"qbittorrent") | chown(docker_user) }}:/downloads'
+#   {% if QBITTORRENT_EXPOSE_PORT > 0 %}
     ports:
-      - '{{ int(QBITTORRENT_EXPOSE_PORT) }}:8080'
-      - '{{ int(QBITTORRENT_TORRENTING_PORT) }}:{{ int(QBITTORRENT_TORRENTING_PORT) }}'
-      - '{{ int(QBITTORRENT_TORRENTING_PORT) }}:{{ int(QBITTORRENT_TORRENTING_PORT) }}/udp'
+      - '{{ QBITTORRENT_EXPOSE_PORT }}:8080'
+      - '{{ QBITTORRENT_TORRENTING_PORT }}:{{ QBITTORRENT_TORRENTING_PORT }}'
+      - '{{ QBITTORRENT_TORRENTING_PORT }}:{{ QBITTORRENT_TORRENTING_PORT }}/udp'
 #   {% endif %}
     networks:
       - nginx

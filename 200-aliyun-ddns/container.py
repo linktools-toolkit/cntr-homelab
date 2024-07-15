@@ -42,7 +42,7 @@ class Container(BaseContainer):
             ALI_DDNS_ROOT_DOMAIN=Config.Alias("ROOT_DOMAIN", default=Config.Prompt(cached=True)),
             ALI_DDNS_KEY=Config.Alias("Ali_Key", default=Config.Prompt(cached=True)),
             ALI_DDNS_SECRET=Config.Alias("Ali_Secret", default=Config.Prompt(cached=True)),
-            ALI_DDNS_CHECKLOCAL=False,
+            ALI_DDNS_CHECKLOCAL=Config.Alias(type=bool, default=False),
             ALI_DDNS_IPV4NETS="",
             ALI_DDNS_IPV6NETS="",
         )

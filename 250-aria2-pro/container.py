@@ -43,7 +43,7 @@ class Container(BaseContainer):
         return dict(
             ARIA2_TAG="latest",
             ARIA2_DOMAIN=self.get_nginx_domain(),
-            ARIA2_EXPOSE_PORT=None,
+            ARIA2_EXPOSE_PORT=Config.Alias(type=int, default=0),
             ARIA2_RPC_SECRET=Config.Prompt(default="159753", type=str, cached=True),
         )
 

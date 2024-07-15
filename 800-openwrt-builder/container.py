@@ -99,11 +99,6 @@ class Container(BaseContainer):
         ).call()
 
     def on_started(self):
-        self.manager.change_owner(
-            self.get_path("patchs"),
-            self.manager.config.get("DOCKER_USER"),
-        )
-
         self.manager.create_docker_process(
             "exec", "openwrt_builder",
             "git", "config", "--global", "http.sslverify", "false"
