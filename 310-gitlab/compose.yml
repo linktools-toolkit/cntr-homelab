@@ -31,7 +31,7 @@ services:
           pgbouncer_exporter['enable'] = false
           gitlab_exporter['enable'] = false
           prometheus_monitoring['enable'] = false
-          grafana['enable'] = false
+          # grafana['enable'] = false
           sidekiq['metrics_enabled'] = false
 
           # 禁用 PUMA 集群模式
@@ -48,7 +48,7 @@ services:
           # Usage Statistics
           gitlab_rails['usage_ping_enabled'] = false
           gitlab_rails['sentry_enabled'] = false
-          grafana['reporting_enabled'] = false
+          # grafana['reporting_enabled'] = false
 
     ports:
       - '{{ GITLAB_SSH_PORT }}:22'
