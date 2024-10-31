@@ -26,11 +26,10 @@
   / ==ooooooooooooooo==.o.  ooo= //   ,``--{)B     ,"
  /_==__==========__==_ooo__ooo=_/'   /___________,"
 """
-import os
 
 from linktools import Config
-from linktools.container import BaseContainer, ExposeLink
 from linktools.decorator import cached_property
+from linktools_cntr import BaseContainer, ExposeLink
 
 
 class Container(BaseContainer):
@@ -59,12 +58,12 @@ class Container(BaseContainer):
 
     def on_starting(self):
         self.write_nginx_conf(
-            self.manager.config.get("PYPISERVER_DOMAIN"),
+            self.get_config("PYPISERVER_DOMAIN"),
             self.get_path("nginx.conf"),
         )
 
         path = self.get_app_data_path("auth", ".htpasswd", create_parent=True)
         with open(path, "wt") as fd:
-            username = self.manager.config.get('PYPISERVER_USERNAME')
-            password = self.manager.config.get('PYPISERVER_PASSWORD')
+            username = self.get_config('PYPISERVER_USERNAME')
+            password = self.get_config('PYPISERVER_PASSWORD')
             fd.write(f"{username}:{password}")

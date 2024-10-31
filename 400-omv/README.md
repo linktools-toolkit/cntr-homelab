@@ -45,7 +45,11 @@
 
 先按照[文档](../README.md)安装Docker、Python3等环境，然后按照以下命令部署Docker容器
 
+第一次安装：
 ```
+# 添加代码仓库（提示添加成功或者仓库已存在均是预期内的结果，可继续后续步骤）
+ct-cntr repo add https://github.com/ice-black-tea/cntr-homelab
+
 # 添加容器
 # omv中包含了（nextcloud、flare、qbittorrent），其他的像vscode、gitlab按需添加
 ct-cntr add omv gitlab portainer vscode
@@ -58,6 +62,15 @@ ct-cntr config set \
     ACME_DNS_API=dns_ali \
     Ali_Key=xxx \
     Ali_Secret=yyy
+
+# 启动容器
+ct-cntr up
+```
+
+后续升级版本执行以下命令更新即可：
+```
+# 更新脚本版本和代码仓库
+ct-cntr update
 
 # 启动容器
 ct-cntr up
@@ -77,3 +90,7 @@ SYSTEMD_EDITOR="vim" systemctl edit docker.service
 [Unit]
 ExecStartPre=/bin/sleep 60
 ```
+
+## 最终效果
+
+![homelab](../images/homelab.png)

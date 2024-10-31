@@ -26,8 +26,8 @@
   / ==ooooooooooooooo==.o.  ooo= //   ,``--{)B     ,"
  /_==__==========__==_ooo__ooo=_/'   /___________,"
 """
-from linktools.container import BaseContainer, ExposeLink
 from linktools.decorator import cached_property
+from linktools_cntr import BaseContainer, ExposeLink
 
 
 class Container(BaseContainer):
@@ -70,17 +70,17 @@ class Container(BaseContainer):
 
     def on_starting(self):
         self.write_nginx_conf(
-            self.manager.config.get("PVE_DOMAIN"),
+            self.get_config("PVE_DOMAIN"),
             self.get_path("nginx", "pve.conf"),
             name="pve",
         )
         self.write_nginx_conf(
-            self.manager.config.get("IKUAI_DOMAIN"),
+            self.get_config("IKUAI_DOMAIN"),
             self.get_path("nginx", "ikuai.conf"),
             name="ikuai",
         )
         self.write_nginx_conf(
-            self.manager.config.get("OPENWRT_DOMAIN"),
+            self.get_config("OPENWRT_DOMAIN"),
             self.get_path("nginx", "openwrt.conf"),
             name="openwrt",
         )

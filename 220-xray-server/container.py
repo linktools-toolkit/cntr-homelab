@@ -30,8 +30,8 @@ import os
 import uuid
 
 from linktools import Config
-from linktools.container import BaseContainer
 from linktools.decorator import cached_property
+from linktools_cntr import BaseContainer
 
 
 class Container(BaseContainer):
@@ -56,6 +56,6 @@ class Container(BaseContainer):
         )
 
         self.write_nginx_conf(
-            self.manager.config.get("XRAY_DOMAIN"),
+            self.get_config("XRAY_DOMAIN"),
             self.get_path("nginx.conf"),
         )

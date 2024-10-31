@@ -27,8 +27,8 @@
  /_==__==========__==_ooo__ooo=_/'   /___________,"
 """
 from linktools import Config
-from linktools.container import BaseContainer, ExposeLink
 from linktools.decorator import cached_property
+from linktools_cntr import BaseContainer, ExposeLink
 
 
 class Container(BaseContainer):
@@ -54,6 +54,6 @@ class Container(BaseContainer):
 
     def on_starting(self):
         self.write_nginx_conf(
-            self.manager.config.get("PROXY_POOL_DOMAIN"),
+            self.get_config("PROXY_POOL_DOMAIN"),
             self.get_path("nginx.conf"),
         )

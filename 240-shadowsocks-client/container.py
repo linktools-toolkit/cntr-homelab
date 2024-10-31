@@ -26,11 +26,10 @@
   / ==ooooooooooooooo==.o.  ooo= //   ,``--{)B     ,"
  /_==__==========__==_ooo__ooo=_/'   /___________,"
 """
-import os
 
 from linktools import Config
-from linktools.container import BaseContainer
 from linktools.decorator import cached_property
+from linktools_cntr import BaseContainer
 
 
 class Container(BaseContainer):

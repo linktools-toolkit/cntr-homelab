@@ -28,8 +28,8 @@
 """
 
 from linktools import Config
-from linktools.container import BaseContainer, ExposeLink
 from linktools.decorator import cached_property
+from linktools_cntr import BaseContainer, ExposeLink
 
 
 class Container(BaseContainer):
@@ -55,6 +55,6 @@ class Container(BaseContainer):
 
     def on_starting(self):
         self.write_nginx_conf(
-            self.manager.config.get("ARIA2_DOMAIN"),
+            self.get_config("ARIA2_DOMAIN"),
             self.get_path("nginx.conf"),
         )

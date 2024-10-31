@@ -9,7 +9,11 @@
 
 先按照[文档](../README.md)安装Docker、Python3等环境，然后按照以下命令部署Docker容器
 
+第一次安装：
 ```
+# 添加代码仓库（提示添加成功或者仓库已存在均是预期内的结果，可继续后续步骤）
+ct-cntr repo add https://github.com/ice-black-tea/cntr-homelab
+
 # 添加容器，核心是xray-server，其他可选
 ct-cntr add xray-server portainer 
 
@@ -29,6 +33,20 @@ ct-cntr config set \
 
 # 启动容器
 ct-cntr up
+```
+
+后续升级版本执行以下命令更新即可：
+```
+# 更新脚本版本和代码仓库
+ct-cntr update
+
+# 启动容器
+ct-cntr up
+```
+
+正式部署开始：
+```
+
 ```
 
 最后，xray客户端可以通过以下配置连接到xray服务端
