@@ -7,7 +7,7 @@
 
 ## 开始部署
 
-先按照[文档](../README.md)安装Docker、Python3等环境，然后按照以下命令部署Docker容器
+先按照[文档](https://github.com/ice-black-tea/linktools-cntr/blob/master/README.md)安装Docker、Python3等环境，然后按照以下命令部署Docker容器
 
 第一次安装：
 ```
