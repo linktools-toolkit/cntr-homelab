@@ -69,8 +69,8 @@ ct-cntr up
 
 后续升级版本执行以下命令更新即可：
 ```
-# 更新脚本版本和代码仓库
-ct-cntr update
+# 更新代码仓库
+ct-cntr repo update
 
 # 启动容器
 ct-cntr up
