@@ -21,4 +21,5 @@ if [ "$ONLYOFFICE_ENABLED" = 'yes' ]; then
     php /var/www/html/occ config:app:set onlyoffice jwt_secret --value="$ONLYOFFICE_SECRET"
     php /var/www/html/occ config:system:set onlyoffice jwt_header --value="AuthorizationJwt"
     php /var/www/html/occ config:app:set onlyoffice DocumentServerUrl --value="$OVERWRITECLIURL/onlyoffice"
+    php /var/www/html/occ config:app:set onlyoffice DocumentServerInternalUrl --value="http://nextcloud-onlyoffice/"
 fi
