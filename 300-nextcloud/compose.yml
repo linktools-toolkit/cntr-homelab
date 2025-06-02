@@ -3,7 +3,7 @@ services:
   nextcloud:
     user: '{{ DOCKER_UID }}:{{ DOCKER_GID }}'
     environment:
-      - 'NEXTCLOUD_TRUSTED_DOMAINS={{ NEXTCLOUD_DOMAIN }}'
+      - 'NEXTCLOUD_DOMAIN={{ NEXTCLOUD_DOMAIN }}'
       - 'OVERWRITEPROTOCOL=https'
       - 'OVERWRITEHOST={{ NEXTCLOUD_DOMAIN }}:{{ HTTPS_PORT }}'
       - 'OVERWRITECLIURL=https://{{ NEXTCLOUD_DOMAIN }}:{{ HTTPS_PORT }}'
