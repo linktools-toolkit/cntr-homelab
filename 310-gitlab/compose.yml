@@ -11,6 +11,7 @@ services:
           nginx['listen_port'] = 80
           nginx['listen_https'] = false
 
+          postgresql['enable'] = false
           gitlab_rails['db_adapter'] = "postgresql"
           gitlab_rails['db_encoding'] = "utf8"
           gitlab_rails['db_host'] = "{{ GITLAB_DB_HOST }}"
