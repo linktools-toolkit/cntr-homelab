@@ -6,10 +6,8 @@ services:
     environment:
       - 'IDENT=ice-black-tea'
 #   {% for key in container.keys -%}
-#   {% with value = config.get(key, default=None) -%}
-#   {% if value %}
+#   {% with value = config.get(key, default='') -%}
       - '{{ key }}={{ value }}'
-#   {% endif %}
 #   {%- endwith %}
 #   {%- endfor %}
 #   {% if XIAOYA_ALIST_EXPOSE_PORT > 0 %}
