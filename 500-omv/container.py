@@ -72,23 +72,34 @@ class Container(BaseContainer):
         ]
 
     def on_starting(self):
-        self.write_nginx_conf(
-            self.get_config("PVE_DOMAIN"),
-            url=self.get_config("PVE_LOCAL_URL"),
-            name="pve",
-        )
-        self.write_nginx_conf(
-            self.get_config("PRIMARY_GATEWAY_DOMAIN"),
-            url=self.get_config("PRIMARY_GATEWAY_LOCAL_URL"),
-            name="primary-gateway",
-        )
-        self.write_nginx_conf(
-            self.get_config("BYPASS_GATEWAY_DOMAIN"),
-            url=self.get_config("BYPASS_GATEWAY_LOCAL_URL"),
-            name="bypass-gateway",
-        )
-        self.write_nginx_conf(
-            self.get_config("JELLYFIN_DOMAIN"),
-            url=self.get_config("JELLYFIN_LOCAL_URL"),
-            name="jellyfin",
-        )
+        url = self.get_config("PVE_LOCAL_URL")
+        if url:
+            self.write_nginx_conf(
+                self.get_config("PVE_DOMAIN"),
+                url=url,
+                name="pve",
+            )
+
+        url = self.get_config("PRIMARY_GATEWAY_LOCAL_URL")
+        if url:
+            self.write_nginx_conf(
+                self.get_config("PRIMARY_GATEWAY_DOMAIN"),
+                url=url,
+                name="primary-gateway",
+            )
+
+        url = self.get_config("BYPASS_GATEWAY_LOCAL_URL")
+        if url:
+            self.write_nginx_conf(
+                self.get_config("BYPASS_GATEWAY_DOMAIN"),
+                url=url,
+                name="bypass-gateway",
+            )
+
+        url = self.get_config("JELLYFIN_LOCAL_URL")
+        if url:
+            self.write_nginx_conf(
+                self.get_config("JELLYFIN_DOMAIN"),
+                url=url,
+                name="jellyfin",
+            )
