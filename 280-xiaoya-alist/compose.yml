@@ -5,9 +5,9 @@ services:
       - '{{ XIAOYA_ALIST_DATA_PATH | mkdir | chown }}:/data'
     environment:
       - 'IDENT=ice-black-tea'
-#   { % for key in container.keys -% }
-#   { % with value = config.get(key, default=None) -% }
-#   { % if value % }
+#   {% for key in container.keys -%}
+#   {% with value = config.get(key, default=None) -%}
+#   {% if value %}
       - '{{ key }}={{ value }}'
 #   {% endif %}
 #   {%- endwith %}
