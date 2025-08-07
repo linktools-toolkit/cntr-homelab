@@ -39,13 +39,13 @@ class Container(BaseContainer):
         return ["nginx"]
 
     @cached_property
-    def keys(self):
+    def items(self):
         try:
             import dotenv
             env = dotenv.dotenv_values(self.get_path("env"))
-            return env.keys()
+            return env
         except ImportError:
-            return tuple()
+            return {}
 
     @cached_property
     def configs(self):

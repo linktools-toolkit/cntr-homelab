@@ -4,11 +4,10 @@ services:
     volumes:
       - '{{ XIAOYA_ALIST_DATA_PATH | mkdir | chown }}:/data'
     environment:
-      - 'IDENT=ice-black-tea'
-#   {% for key in container.keys -%}
-#   {% with value = config.get(key, default='') -%}
+#   {% for key in container.items -%}
+#   {% with value = config.get('XIAOYA_ALIST_'+key, default=container.items[key]) %}
       - '{{ key }}={{ value }}'
-#   {%- endwith %}
+#   {% endwith %}
 #   {%- endfor %}
 #   {% if XIAOYA_ALIST_EXPOSE_PORT > 0 %}
     ports:

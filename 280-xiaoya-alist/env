@@ -27,7 +27,7 @@ WEBDAV_PASSWORD=
 # emby 地址，容器内部使用地址，一般不用改
 EMBY_ADDR=http://emby:6908
 # alist 地址，容器内部使用地址，一般不用改
-ALIST_ADDR=http://alist:5678
+ALIST_ADDR=http://xiaoya-alist:5678
 
 # 是否启用emby
 EMBY_ENABLED=true
