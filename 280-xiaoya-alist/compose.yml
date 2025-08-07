@@ -1,6 +1,6 @@
 services:
   xiaoya-alist:
-    image: 'image: ghcr.io/monlor/xiaoya-alist:{{ XIAOYA_ALIST_TAG }}'
+    image: 'ghcr.io/monlor/xiaoya-alist:{{ XIAOYA_ALIST_TAG }}'
     volumes:
       - '{{ XIAOYA_ALIST_DATA_PATH | mkdir | chown }}:/data'
     environment:
