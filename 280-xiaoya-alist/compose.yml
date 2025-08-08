@@ -4,6 +4,7 @@ services:
     volumes:
       - '{{ XIAOYA_ALIST_DATA_PATH | mkdir | chown }}:/data'
     environment:
+      - ALIST_ADMIN_PASSWORD={{ XIAOYA_ALIST_ADMIN_PASSWORD }}
 #   {% for key in container.items -%}
 #   {% with value = config.get('XIAOYA_ALIST_'+key, default=container.items[key]) %}
       - '{{ key }}={{ value }}'
