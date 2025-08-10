@@ -40,12 +40,9 @@ class Container(BaseContainer):
 
     @cached_property
     def items(self):
-        try:
-            import dotenv
-            env = dotenv.dotenv_values(self.get_path("env"))
-            return env
-        except ImportError:
-            return {}
+        import dotenv
+        env = dotenv.dotenv_values(self.get_path("env"))
+        return env
 
     @cached_property
     def configs(self):
@@ -60,8 +57,8 @@ class Container(BaseContainer):
     @cached_property
     def exposes(self) -> [ExposeLink]:
         return [
-            self.expose_container("Alist", "folderSync", "", self.load_port_url("XIAOYA_ALIST_EXPOSE_PORT", https=False)),
-            self.expose_public("Alist", "folderSync", "", self.load_nginx_url("XIAOYA_ALIST_DOMAIN")),
+            self.expose_container("Xiaoya-Alist", "folderSync", "", self.load_port_url("XIAOYA_ALIST_EXPOSE_PORT", https=False)),
+            self.expose_public("Xiaoya-Alist", "folderSync", "", self.load_nginx_url("XIAOYA_ALIST_DOMAIN")),
         ]
 
     def on_starting(self):
