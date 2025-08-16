@@ -43,7 +43,7 @@ class Container(BaseContainer):
         return dict(
             DSM_TAG="latest",
             DSM_DOMAIN="",
-            DSM_EXPOSE_PORT=Config.Prompt(cached=True) | utils.make_uuid()[:12],
+            DSM_EXPOSE_PORT=Config.Alias(type=int, default=5000),
             DSM_DISK_SIZE="16G",
         )
 
