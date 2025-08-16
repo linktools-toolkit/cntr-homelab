@@ -41,23 +41,22 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
-            ALIST_TAG="latest",
-            ALIST_DATA_PATH=Config.Prompt(cached=True, type="path") | self.get_app_data_path("data"),
-            ALIST_ADMIN_PASSWORD=Config.Prompt(cached=True) | utils.make_uuid()[:12],
-            ALIST_DOMAIN=self.get_nginx_domain(),
-            ALIST_EXPOSE_PORT=Config.Alias(type=int) | 0,
+            DSM_TAG="latest",
+            DSM_DOMAIN="",
+            DSM_EXPOSE_PORT=Config.Prompt(cached=True) | utils.make_uuid()[:12],
+            DSM_DISK_SIZE="16G",
         )
 
     @cached_property
     def exposes(self) -> [ExposeLink]:
         return [
-            self.expose_container("Alist", "folderSync", "", self.load_port_url("ALIST_EXPOSE_PORT", https=False)),
-            self.expose_public("Alist", "folderSync", "", self.load_nginx_url("ALIST_DOMAIN")),
+            self.expose_public("DSM", "nas", "群晖系统", self.load_nginx_url("DSM_DOMAIN")),
+            self.expose_private("DSM", "nas", "群晖系统", self.load_config_url("DSM_LOCAL_URL")),
         ]
 
     def on_starting(self):
         self.write_nginx_conf(
-            domain=self.get_config("ALIST_DOMAIN"),
-            url="http://alist:5244",
+            domain=self.get_config("OMV_DOMAIN"),
+            url="http://dsm:5000",
         )
 

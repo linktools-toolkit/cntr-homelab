@@ -41,7 +41,9 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            OMV_DOMAIN="",
             OMV_LOCAL_URL="http://10.10.10.1:80",
+
             PVE_DOMAIN=self.get_nginx_domain("pve"),
             PVE_LOCAL_URL="https://10.10.10.254:8006",
             PRIMARY_GATEWAY_DOMAIN=self.get_nginx_domain("gw1"),
@@ -60,6 +62,7 @@ class Container(BaseContainer):
     @cached_property
     def exposes(self) -> Iterable[ExposeLink]:
         return [
+            self.expose_public("OpenMediaVault", "nas", "OMV系统", self.load_nginx_url("OMV_DOMAIN")),
             self.expose_private("OpenMediaVault", "nas", "OMV系统", self.load_config_url("OMV_LOCAL_URL")),
 
             self.expose_public("Proxmox", "server", "虚拟化环境", self.load_nginx_url("PVE_DOMAIN")),
@@ -82,6 +85,12 @@ class Container(BaseContainer):
         ]
 
     def on_starting(self):
+        self.write_nginx_conf(
+            domain=self.get_config("OMV_DOMAIN"),
+            url=self.get_config("OMV_LOCAL_URL"),
+            name="omv",
+        )
+
         self.write_nginx_conf(
             domain=self.get_config("PVE_DOMAIN"),
             url=self.get_config("PVE_LOCAL_URL"),
