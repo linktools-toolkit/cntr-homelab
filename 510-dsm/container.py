@@ -84,7 +84,7 @@ class Container(BaseContainer):
     @subcommand_argument("-p", "--permission", choices=("ro", "rw"))
     def on_add_file(self, src: str, dest: str, permission: str = "rw"):
         src_path = Path(os.path.expanduser(src)).absolute()
-        dest_path = PurePosixPath("storage", dest).as_posix()
+        dest_path = PurePosixPath("/storage", dest).as_posix()
         if not os.path.exists(src_path):
             self.logger.error(f"{src_path} not exists.")
             return
@@ -105,6 +105,9 @@ class Container(BaseContainer):
         with self._config_lock:
             config = self._load_config()
             mount_paths = config.setdefault("mount_paths", {})
+            if not mount_paths:
+                self.logger.error("not found any mount path")
+                return
             dest_path = choose(
                 "Choose mount path",
                 choices=mount_paths
