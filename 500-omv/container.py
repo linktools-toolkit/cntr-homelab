@@ -41,16 +41,18 @@ class Container(BaseContainer):
     @cached_property
     def configs(self):
         return dict(
+            OMV_LOCAL_URL="http://10.10.10.1:80",
             PVE_DOMAIN=self.get_nginx_domain("pve"),
             PVE_LOCAL_URL="https://10.10.10.254:8006",
-            PRIMARY_GATEWAY_DOMAIN=self.get_nginx_domain("primary-gateway"),
+            PRIMARY_GATEWAY_DOMAIN=self.get_nginx_domain("gw1"),
             PRIMARY_GATEWAY_LOCAL_URL="http://10.10.10.253:80",
-            BYPASS_GATEWAY_DOMAIN=self.get_nginx_domain("bypass-gateway"),
+            BYPASS_GATEWAY_DOMAIN=self.get_nginx_domain("gw2"),
             BYPASS_GATEWAY_LOCAL_URL="http://10.10.10.252:80",
 
-            OMV_LOCAL_URL="http://10.10.10.1:80",
-            DSM_LOCAL_URL="",
-
+            XIAOYA_ALIST_LOCAL_URL="",
+            XIAOYA_ALIST_DOMAIN="",
+            EMBY_LOCAL_URL="",
+            EMBY_DOMAIN="",
             JELLYFIN_LOCAL_URL="",
             JELLYFIN_DOMAIN="",
         )
@@ -58,16 +60,24 @@ class Container(BaseContainer):
     @cached_property
     def exposes(self) -> Iterable[ExposeLink]:
         return [
-            self.expose_public("Proxmox", "server", "虚拟化环境", self.load_nginx_url("PVE_DOMAIN")),
-            self.expose_public("PrimaryGateway", "RouterNetwork", "主路由管理", self.load_nginx_url("PRIMARY_GATEWAY_DOMAIN")),
-            self.expose_public("BypassGateway", "RouterNetwork", "旁路由管理", self.load_nginx_url("BYPASS_GATEWAY_DOMAIN")),
-            self.expose_public("Jellyfin", "movie", "jellyfin", self.load_nginx_url("JELLYFIN_DOMAIN")),
-
-            self.expose_private("Proxmox", "server", "虚拟化环境", self.load_config_url("PVE_LOCAL_URL")),
-            self.expose_private("PrimaryGateway", "RouterNetwork", "主路由管理", self.load_config_url("PRIMARY_GATEWAY_LOCAL_URL")),
-            self.expose_private("BypassGateway", "RouterNetwork", "旁路由管理", self.load_config_url("BYPASS_GATEWAY_LOCAL_URL")),
             self.expose_private("OpenMediaVault", "nas", "OMV系统", self.load_config_url("OMV_LOCAL_URL")),
-            self.expose_private("DSM", "nas", "群晖系统", self.load_config_url("DSM_LOCAL_URL")),
+
+            self.expose_public("Proxmox", "server", "虚拟化环境", self.load_nginx_url("PVE_DOMAIN")),
+            self.expose_private("Proxmox", "server", "虚拟化环境", self.load_config_url("PVE_LOCAL_URL")),
+
+            self.expose_public("PrimaryGateway", "RouterNetwork", "主路由管理", self.load_nginx_url("PRIMARY_GATEWAY_DOMAIN")),
+            self.expose_private("PrimaryGateway", "RouterNetwork", "主路由管理", self.load_config_url("PRIMARY_GATEWAY_LOCAL_URL")),
+
+            self.expose_public("BypassGateway", "RouterNetwork", "旁路由管理", self.load_nginx_url("BYPASS_GATEWAY_DOMAIN")),
+            self.expose_private("BypassGateway", "RouterNetwork", "旁路由管理", self.load_config_url("BYPASS_GATEWAY_LOCAL_URL")),
+
+            self.expose_public("Xiaoya-Alist", "folderSync", "小雅Alist", self.load_nginx_url("XIAOYA_ALIST_DOMAIN")),
+            self.expose_private("Xiaoya-Alist", "folderSync", "小雅Alist", self.load_config_url("XIAOYA_ALIST_LOCAL_URL")),
+
+            self.expose_public("Emby", "movie", "Emby", self.load_nginx_url("EMBY_DOMAIN")),
+            self.expose_private("Emby", "movie", "Emby", self.load_config_url("EMBY_LOCAL_URL")),
+
+            self.expose_public("Jellyfin", "movie", "jellyfin", self.load_nginx_url("JELLYFIN_DOMAIN")),
             self.expose_private("Jellyfin", "movie", "jellyfin", self.load_config_url("JELLYFIN_LOCAL_URL")),
         ]
 
@@ -88,6 +98,18 @@ class Container(BaseContainer):
             domain=self.get_config("BYPASS_GATEWAY_DOMAIN"),
             url=self.get_config("BYPASS_GATEWAY_LOCAL_URL"),
             name="bypass-gateway",
+        )
+
+        self.write_nginx_conf(
+            domain=self.get_config("XIAOYA_ALIST_DOMAIN"),
+            url=self.get_config("XIAOYA_ALIST_LOCAL_URL"),
+            name="xiaoya-alist",
+        )
+
+        self.write_nginx_conf(
+            domain=self.get_config("EMBY_DOMAIN"),
+            url=self.get_config("EMBY_LOCAL_URL"),
+            name="emby",
         )
 
         self.write_nginx_conf(
