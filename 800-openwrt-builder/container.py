@@ -70,7 +70,7 @@ class Container(BaseContainer):
             if config_name[:1].isalpha() and config_name.endswith(".config"):
                 config_names.append(config_name[:-len(".config")])
 
-        index = choose(
+        config_name = choose(
             f"Choose config",
             choices=config_names,
         )
@@ -79,7 +79,7 @@ class Container(BaseContainer):
             "exec", "-it", "openwrt_builder",
             "sh", "-c", utils.list2cmdline([
                 "ln", "-sf",
-                f"/home/user/configs/{config_names[index]}.config",
+                f"/home/user/configs/{config_name}.config",
                 f"/home/user/openwrt/.config"
             ])
         ).call()
