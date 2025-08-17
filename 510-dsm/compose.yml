@@ -13,9 +13,9 @@ services:
       - '{{ DSM_EXPOSE_PORT }}:5000'
 #   {% endif %}
     volumes:
-      - '{{ (APP_DATA_PATH/"data") | mkdir | chown }}:/storage'
+      - '{{ (APP_PATH/"data") | mkdir | chown }}:/storage'
 #   {% for path in container.mount_paths %}
-      - '{{ path }}'
+#      - '{{ path }}'
 #   {% endfor %}
     restart: always
     stop_grace_period: 2m

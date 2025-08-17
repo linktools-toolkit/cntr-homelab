@@ -50,7 +50,7 @@ class Container(BaseContainer):
             DSM_TAG="latest",
             DSM_DOMAIN="",
             DSM_EXPOSE_PORT=Config.Alias(type=int, default=5000),
-            DSM_DISK_SIZE="16G",
+            DSM_DISK_SIZE="4G",
         )
 
     @cached_property
@@ -60,61 +60,61 @@ class Container(BaseContainer):
             self.expose_private("DSM", "nas", "群晖系统", self.load_port_url("DSM_EXPOSE_PORT", https=False)),
         ]
 
-    @property
-    def mount_paths(self):
-        result = []
-        with self._config_lock:
-            config = self._load_config()
-            mount_paths = config.setdefault("mount_paths", {})
-            for mount_path in mount_paths.values():
-                result.append(mount_path)
-        return result
-
-    @subcommand("ls", help="list dsm storage path")
-    def on_list_file(self):
-        with self._config_lock:
-            config = self._load_config()
-            mount_paths = config.setdefault("mount_paths", {})
-            for mount_path in mount_paths.values():
-                self.logger.info(mount_path)
-
-    @subcommand("add", help="add dsm storage path")
-    @subcommand_argument("src", help="host path")
-    @subcommand_argument("dest", help="dsm path")
-    @subcommand_argument("-p", "--permission", choices=("ro", "rw"))
-    def on_add_file(self, src: str, dest: str, permission: str = "rw"):
-        src_path = Path(os.path.expanduser(src)).absolute()
-        dest_path = PurePosixPath("/storage", dest).as_posix()
-        if not os.path.exists(src_path):
-            self.logger.error(f"{src_path} not exists.")
-            return
-        with self._config_lock:
-            config = self._load_config()
-            mount_path = f"{src_path}:{dest_path}:{permission}"
-            mount_paths = config.setdefault("mount_paths", {})
-            if dest_path in mount_paths:
-                if not confirm(f"{dest_path} is mounted: {mount_paths.get(dest_path)}, overwrite it?"):
-                    self.logger.info(f"cancel")
-                    return
-            mount_paths[dest_path] = mount_path
-            self._dump_config(config)
-            self.logger.info(f"add {mount_path}")
-
-    @subcommand("rm", help="remove dsm storage path")
-    def on_remove_file(self):
-        with self._config_lock:
-            config = self._load_config()
-            mount_paths = config.setdefault("mount_paths", {})
-            if not mount_paths:
-                self.logger.error("not found any mount path")
-                return
-            dest_path = choose(
-                "Choose mount path",
-                choices=mount_paths
-            )
-            mount_path = mount_paths.pop(dest_path)
-            self._dump_config(config)
-            self.logger.info(f"remove {mount_path}")
+    # @property
+    # def mount_paths(self):
+    #     result = []
+    #     with self._config_lock:
+    #         config = self._load_config()
+    #         mount_paths = config.setdefault("mount_paths", {})
+    #         for mount_path in mount_paths.values():
+    #             result.append(mount_path)
+    #     return result
+    #
+    # @subcommand("ls", help="list dsm storage path")
+    # def on_list_file(self):
+    #     with self._config_lock:
+    #         config = self._load_config()
+    #         mount_paths = config.setdefault("mount_paths", {})
+    #         for mount_path in mount_paths.values():
+    #             self.logger.info(mount_path)
+    #
+    # @subcommand("add", help="add dsm storage path")
+    # @subcommand_argument("src", help="host path")
+    # @subcommand_argument("dest", help="dsm path")
+    # @subcommand_argument("-p", "--permission", choices=("ro", "rw"))
+    # def on_add_file(self, src: str, dest: str, permission: str = "rw"):
+    #     src_path = Path(os.path.expanduser(src)).absolute()
+    #     dest_path = PurePosixPath("/storage", dest).as_posix()
+    #     if not os.path.exists(src_path):
+    #         self.logger.error(f"{src_path} not exists.")
+    #         return
+    #     with self._config_lock:
+    #         config = self._load_config()
+    #         mount_path = f"{src_path}:{dest_path}:{permission}"
+    #         mount_paths = config.setdefault("mount_paths", {})
+    #         if dest_path in mount_paths:
+    #             if not confirm(f"{dest_path} is mounted: {mount_paths.get(dest_path)}, overwrite it?"):
+    #                 self.logger.info(f"cancel")
+    #                 return
+    #         mount_paths[dest_path] = mount_path
+    #         self._dump_config(config)
+    #         self.logger.info(f"add {mount_path}")
+    #
+    # @subcommand("rm", help="remove dsm storage path")
+    # def on_remove_file(self):
+    #     with self._config_lock:
+    #         config = self._load_config()
+    #         mount_paths = config.setdefault("mount_paths", {})
+    #         if not mount_paths:
+    #             self.logger.error("not found any mount path")
+    #             return
+    #         dest_path = choose(
+    #             "Choose mount path",
+    #             choices=mount_paths
+    #         )
+    #         mount_path = mount_paths.pop(dest_path)
+    #         self._dump_config(config)
+    #         self.logger.info(f"remove {mount_path}")
 
     def on_starting(self):
         self.write_nginx_conf(
