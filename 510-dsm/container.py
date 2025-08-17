@@ -50,7 +50,8 @@ class Container(BaseContainer):
             DSM_TAG="latest",
             DSM_DOMAIN="",
             DSM_EXPOSE_PORT=Config.Alias(type=int, default=5000),
-            DSM_DISK_SIZE="4G",
+            DSM_DISK_FMT="qcow2",
+            DSM_DISK_SIZE="6G",
         )
 
     @cached_property

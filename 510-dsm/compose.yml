@@ -2,6 +2,7 @@ services:
   dsm:
     image: 'vdsm/virtual-dsm:{{ DSM_TAG }}'
     environment:
+      DISK_FMT: "{{ DSM_DISK_FMT }}"
       DISK_SIZE: "{{ DSM_DISK_SIZE }}"
     devices:
       - /dev/kvm
