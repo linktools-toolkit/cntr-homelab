@@ -123,21 +123,21 @@ class Container(BaseContainer):
             url="http://dsm:5000",
         )
 
-    @cached_property
-    def _config_lock(self):
-        return FileLock(self.get_app_path("config.json", create_parent=True))
-
-    @cached_property
-    def _config_path(self):
-        return self.get_app_path("config.json.lock", create_parent=True)
-
-    def _load_config(self):
-        try:
-            if os.path.exists(self._config_path):
-                return json.loads(utils.read_file(self._config_path, text=True))
-        except Exception as e:
-            self.logger.warning(f"load {self} config error: {e}")
-        return {}
-
-    def _dump_config(self, config):
-        utils.write_file(self._config_path, json.dumps(config))
+    # @cached_property
+    # def _config_lock(self):
+    #     return FileLock(self.get_app_path("config.json", create_parent=True))
+    #
+    # @cached_property
+    # def _config_path(self):
+    #     return self.get_app_path("config.json.lock", create_parent=True)
+    #
+    # def _load_config(self):
+    #     try:
+    #         if os.path.exists(self._config_path):
+    #             return json.loads(utils.read_file(self._config_path, text=True))
+    #     except Exception as e:
+    #         self.logger.warning(f"load {self} config error: {e}")
+    #     return {}
+    #
+    # def _dump_config(self, config):
+    #     utils.write_file(self._config_path, json.dumps(config))
