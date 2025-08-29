@@ -68,11 +68,11 @@ class Container(BaseContainer):
             for mount_path in mount_paths.values():
                 self.logger.info(mount_path)
 
-    @subcommand("add", help="add mount path")
+    @subcommand("mount", help="mount path")
     @subcommand_argument("src", help="host path")
     @subcommand_argument("dest", help="dsm path")
     @subcommand_argument("-p", "--permission", choices=("ro", "rw"))
-    def on_add_file(self, src: str, dest: str, permission: str = "rw"):
+    def on_mount(self, src: str, dest: str, permission: str = "rw"):
         src_path = Path(os.path.expanduser(src)).absolute()
         dest_path = PurePosixPath(dest).as_posix()
         if not os.path.exists(src_path):
@@ -90,8 +90,8 @@ class Container(BaseContainer):
             self._dump_config(config)
             self.logger.info(f"add {mount_path}")
 
-    @subcommand("rm", help="remove mount path")
-    def on_remove_file(self):
+    @subcommand("rm", help="unmount path")
+    def on_unmount_file(self):
         with self._config_lock:
             config = self._load_config()
             mount_paths = config.setdefault("mount_paths", {})

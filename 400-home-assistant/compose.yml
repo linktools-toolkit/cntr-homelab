@@ -7,7 +7,7 @@ services:
       - '{{ HOME_ASSISTANT_EXPOSE_PORT }}:8123'
 #   {% endif %}
     volumes:
-      - '{{ mkdir(APP_DATA_PATH/"config") | chown }}:/config'
+      - '{{ (APP_PATH/"config") | mkdir | chown }}:/config'
       - '/etc/localtime:/etc/localtime:ro'
       - '/run/dbus:/run/dbus:ro'
     privileged: true
