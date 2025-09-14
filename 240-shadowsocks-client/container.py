@@ -47,6 +47,6 @@ class Container(BaseContainer):
 
     def on_starting(self):
         self.render_template(
-            self.get_path("config.json"),
+            self.get_source_path("config.json"),
             self.get_app_path("config.json", create_parent=True),
         )

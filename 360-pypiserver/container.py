@@ -59,7 +59,7 @@ class Container(BaseContainer):
     def on_starting(self):
         self.write_nginx_conf(
             self.get_config("PYPISERVER_DOMAIN"),
-            self.get_path("nginx.conf"),
+            self.get_source_path("nginx.conf"),
         )
 
         path = self.get_app_data_path("auth", ".htpasswd", create_parent=True)

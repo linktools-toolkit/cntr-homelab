@@ -53,77 +53,12 @@ class Container(BaseContainer):
     @property
     def mount_paths(self):
         result = []
-        with self._config_lock:
-            config = self._load_config()
-            mount_paths = config.setdefault("mount_paths", {})
+        with self.settings.open() as data:
+            mount_paths = data.get("mount_paths") or {}
             for mount_path in mount_paths.values():
                 result.append(mount_path)
+            data.set("mount_paths", mount_paths)
         return result
-
-    @subcommand("ls", help="list mount path")
-    def on_list_file(self):
-        with self._config_lock:
-            config = self._load_config()
-            mount_paths = config.setdefault("mount_paths", {})
-            for mount_path in mount_paths.values():
-                self.logger.info(mount_path)
-
-    @subcommand("mount", help="mount path")
-    @subcommand_argument("src", help="host path")
-    @subcommand_argument("dest", help="dsm path")
-    @subcommand_argument("-p", "--permission", choices=("ro", "rw"))
-    def on_mount(self, src: str, dest: str, permission: str = "rw"):
-        src_path = Path(os.path.expanduser(src)).absolute()
-        dest_path = PurePosixPath(dest).as_posix()
-        if not os.path.exists(src_path):
-            self.logger.error(f"{src_path} not exists.")
-            return
-        with self._config_lock:
-            config = self._load_config()
-            mount_path = f"{src_path}:{dest_path}:{permission}"
-            mount_paths = config.setdefault("mount_paths", {})
-            if dest_path in mount_paths:
-                if not confirm(f"{dest_path} is mounted: {mount_paths.get(dest_path)}, overwrite it?"):
-                    self.logger.info(f"cancel")
-                    return
-            mount_paths[dest_path] = mount_path
-            self._dump_config(config)
-            self.logger.info(f"add {mount_path}")
-
-    @subcommand("rm", help="unmount path")
-    def on_unmount_file(self):
-        with self._config_lock:
-            config = self._load_config()
-            mount_paths = config.setdefault("mount_paths", {})
-            if not mount_paths:
-                self.logger.error("not found any mount path")
-                return
-            dest_path = choose(
-                "Choose mount path",
-                choices=mount_paths
-            )
-            mount_path = mount_paths.pop(dest_path)
-            self._dump_config(config)
-            self.logger.info(f"remove {mount_path}")
-
-    @cached_property
-    def _config_lock(self):
-        return FileLock(self.get_app_path("config.json", create_parent=True))
-
-    @cached_property
-    def _config_path(self):
-        return self.get_app_path("config.json.lock", create_parent=True)
-
-    def _load_config(self):
-        try:
-            if os.path.exists(self._config_path):
-                return json.loads(utils.read_file(self._config_path, text=True))
-        except Exception as e:
-            self.logger.warning(f"load {self} config error: {e}")
-        return {}
-
-    def _dump_config(self, config):
-        utils.write_file(self._config_path, json.dumps(config))
 
     @subcommand("config", help="exec rclone config", prefix_chars=chr(1))
     @subcommand_argument("args", nargs="...", metavar="ARGS", help="rclone config args")

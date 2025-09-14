@@ -72,5 +72,5 @@ class Container(BaseContainer):
     def on_starting(self):
         self.write_nginx_conf(
             self.get_config("NEXTCLOUD_DOMAIN"),
-            self.get_path("nginx.conf"),
+            self.get_source_path("nginx.conf"),
         )
