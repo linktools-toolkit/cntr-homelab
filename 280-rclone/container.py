@@ -50,19 +50,9 @@ class Container(BaseContainer):
             ALIST_EXPOSE_PORT=Config.Alias(type=int) | 0,
         )
 
-    @property
-    def mount_paths(self):
-        result = []
-        with self.settings.open() as data:
-            mount_paths = data.get("mount_paths") or {}
-            for mount_path in mount_paths.values():
-                result.append(mount_path)
-            data.set("mount_paths", mount_paths)
-        return result
-
     @subcommand("config", help="exec rclone config", prefix_chars=chr(1))
     @subcommand_argument("args", nargs="...", metavar="ARGS", help="rclone config args")
-    def on_rclone_config(self, args):
+    def on_exec_rclone_config(self, args):
         service = self.choose_service()
         name = service.get("container_name")
         self.manager.create_docker_process(
@@ -72,7 +62,7 @@ class Container(BaseContainer):
 
     @subcommand("crontab", help="exec crontab", prefix_chars=chr(1))
     @subcommand_argument("args", nargs="...", metavar="ARGS", help="crontab args")
-    def on_crontab(self, args):
+    def on_exec_crontab(self, args):
         service = self.choose_service()
         name = service.get("container_name")
         self.manager.create_docker_process(
