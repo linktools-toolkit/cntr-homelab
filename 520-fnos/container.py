@@ -36,24 +36,24 @@ class Container(BaseContainer):
 
     @property
     def dependencies(self) -> Iterable[str]:
-        return ["homelab", "nextcloud", "qbittorrent"]
+        return ["homelab"]
 
     @cached_property
     def configs(self):
         return dict(
-            OMV_DOMAIN="",
-            OMV_LOCAL_URL="http://10.10.10.1:80",
+            FNOS_DOMAIN=self.get_nginx_domain("fn"),
+            FNOS_LOCAL_URL="http://10.10.10.1:5666",
         )
 
     @cached_property
     def exposes(self) -> Iterable[ExposeLink]:
         return [
-            self.expose_public("OpenMediaVault", "nas", "OMV系统", self.load_nginx_url("OMV_DOMAIN")),
-            self.expose_private("OpenMediaVault", "nas", "OMV系统", self.load_config_url("OMV_LOCAL_URL")),
+            self.expose_public("fnOS", "nas", "飞牛系统", self.load_nginx_url("FNOS_DOMAIN")),
+            self.expose_private("fnOS", "nas", "飞牛系统", self.load_config_url("FNOS_LOCAL_URL")),
         ]
 
     def on_starting(self):
         self.write_nginx_conf(
-            domain=self.get_config("OMV_DOMAIN"),
-            url=self.get_config("OMV_LOCAL_URL"),
+            domain=self.get_config("FNOS_DOMAIN"),
+            url=self.get_config("FNOS_LOCAL_URL"),
         )
