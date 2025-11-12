@@ -28,6 +28,7 @@
 """
 import random
 import string
+from typing import Iterable
 
 from linktools import Config
 from linktools.cli import subcommand
@@ -38,7 +39,7 @@ from linktools_cntr import BaseContainer, ExposeLink
 class Container(BaseContainer):
 
     @property
-    def dependencies(self) -> [str]:
+    def dependencies(self) -> Iterable[str]:
         return ["nginx"]
 
     @cached_property
@@ -58,7 +59,7 @@ class Container(BaseContainer):
         )
 
     @cached_property
-    def exposes(self) -> [ExposeLink]:
+    def exposes(self) -> Iterable[ExposeLink]:
         return [
             self.expose_public("Nextcloud", "cloudDownloadOutline", "私人网盘", self.load_nginx_url("NEXTCLOUD_DOMAIN")),
         ]

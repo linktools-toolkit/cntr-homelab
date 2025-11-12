@@ -58,6 +58,6 @@ class Container(BaseContainer):
 
     def on_starting(self):
         self.write_nginx_conf(
-            domain=self.get_config("OMV_DOMAIN"),
+            domain=self.get_config("DSM_DOMAIN"),
             url="http://dsm:5000",
         )

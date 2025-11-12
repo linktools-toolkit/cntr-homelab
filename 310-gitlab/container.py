@@ -52,6 +52,9 @@ class Container(BaseContainer):
             GITLAB_DB_DATABASE="gitlab1",
             GITLAB_DB_USERNAME="gitlab2",
             GITLAB_DB_PASSWORD="gitlab3",
+            GITLAB_REDIS_HOST="gitlab-redis",
+            GITLAB_REDIS_PORT="6379",
+            GITLAB_REDIS_PASSWORD="gitlab_redis_pass",
         )
 
     @cached_property
