@@ -18,7 +18,33 @@
             "streamSettings": {
                 "network": "ws",
                 "wsSettings": {
-                    "path": "{{ XRAY_PATH }}"
+                    "path": "{{ XRAY_WEBSOCKET_PATH }}"
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
+            }
+        },
+	{
+            "port": 9001,
+            "listen": "0.0.0.0",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "{{ XRAY_ID }}"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "{{ XRAY_GRPC_SERVICE_NAME }}"
                 }
             },
             "sniffing": {
