@@ -27,7 +27,9 @@
  /_==__==========__==_ooo__ooo=_/'   /___________,"
 """
 from typing import Iterable
+from urllib.parse import urlparse
 
+from linktools import Config
 from linktools.decorator import cached_property
 from linktools_cntr import BaseContainer, ExposeLink
 
@@ -40,9 +42,21 @@ class Container(BaseContainer):
 
     @cached_property
     def configs(self):
+
+        def get_term_url(config: Config):
+            try:
+                url = config.get("FNOS_LOCAL_URL")
+                parsed = urlparse(url)
+                return f"http://{parsed.hostname}:5122"
+            except:
+                return ""
+
         return dict(
             FNOS_DOMAIN=self.get_nginx_domain("fn"),
+            FNOS_TERM_DOMAIN=self.get_nginx_domain("fntermx"),
+
             FNOS_LOCAL_URL="http://10.10.10.1:5666",
+            FNOS_LOCAL_TERM_URL=Config.Lazy(get_term_url),
         )
 
     @cached_property
@@ -56,4 +70,8 @@ class Container(BaseContainer):
         self.write_nginx_conf(
             domain=self.get_config("FNOS_DOMAIN"),
             url=self.get_config("FNOS_LOCAL_URL"),
+        )
+        self.write_nginx_conf(
+            domain=self.get_config("FNOS_TERM_DOMAIN"),
+            url=self.get_config("FNOS_LOCAL_TERM_URL"),
         )
